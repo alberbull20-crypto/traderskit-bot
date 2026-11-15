@@ -113,6 +113,28 @@ const AccountsIcon = () => (
     </svg>
 );
 
+const LockIcon = () => (
+    <svg width='28' height='28' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
+        <rect x='5' y='11' width='14' height='9' rx='2.5' stroke='currentColor' strokeWidth='1.8' />
+        <path d='M8 11V8a4 4 0 018 0v3' stroke='currentColor' strokeWidth='1.8' strokeLinecap='round' />
+        <circle cx='12' cy='15.5' r='1.3' fill='currentColor' />
+    </svg>
+);
+
+const FlaskIcon = () => (
+    <svg width='28' height='28' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
+        <path d='M9 3h6M10 3v6l-5 9a2 2 0 001.8 3h10.4a2 2 0 001.8-3l-5-9V3' stroke='currentColor' strokeWidth='1.8' strokeLinecap='round' strokeLinejoin='round' />
+        <path d='M8 15h8' stroke='currentColor' strokeWidth='1.8' strokeLinecap='round' />
+    </svg>
+);
+
+const PowerIcon = () => (
+    <svg width='28' height='28' viewBox='0 0 24 24' fill='none' aria-hidden='true'>
+        <path d='M12 3v8' stroke='currentColor' strokeWidth='1.8' strokeLinecap='round' />
+        <path d='M6.3 6.8a8 8 0 1011.4 0' stroke='currentColor' strokeWidth='1.8' strokeLinecap='round' />
+    </svg>
+);
+
 /* ---------- Content ---------- */
 
 const FEATURES = [
@@ -149,6 +171,43 @@ const WHY_ITEMS = [
     'Interactive charts for Deriv markets',
     'Guides and tutorials built into the workspace',
     'Runs in your browser, with nothing to install',
+];
+
+const STEPS = [
+    {
+        title: 'Open the workspace',
+        text: 'Go to the TradersKit trading workspace. It runs in your browser, so there is nothing to download.',
+    },
+    {
+        title: 'Log in with Deriv',
+        text: 'Use your Deriv account to log in on Deriv’s own page. You can also sign up there if you are new.',
+    },
+    {
+        title: 'Build or load a bot',
+        text: 'Design a strategy with the visual builder, or start from a quick strategy. Test it on your demo account first.',
+    },
+    {
+        title: 'Run and monitor',
+        text: 'Start your bot, watch the charts and your results, and stop it whenever you want.',
+    },
+];
+
+const SECURITY_POINTS = [
+    {
+        icon: <LockIcon />,
+        title: 'Deriv’s own login',
+        text: 'You log in on Deriv’s page, not ours. TradersKit never sees or stores your Deriv password.',
+    },
+    {
+        icon: <FlaskIcon />,
+        title: 'Demo first',
+        text: 'Your Deriv demo account works here too, so you can test your strategies without risking real money.',
+    },
+    {
+        icon: <PowerIcon />,
+        title: 'You stay in control',
+        text: 'You choose the account, you start the bot, and you can stop it or log out at any time.',
+    },
 ];
 
 const LandingPage = () => {
@@ -282,6 +341,103 @@ const LandingPage = () => {
                     </div>
                 </div>
             </section>
+
+            {/* How it works */}
+            <section className='landing-page__section' id='how-it-works'>
+                <div className='landing-page__section-head'>
+                    <span className='landing-page__label'>How it works</span>
+                    <h2 className='landing-page__section-title'>From login to live bot in four steps</h2>
+                    <p className='landing-page__section-sub'>Simple to start, with you in control the whole way</p>
+                </div>
+
+                <ol className='landing-page__steps'>
+                    {STEPS.map((step, index) => (
+                        <li className='landing-page__step' key={step.title}>
+                            <span className='landing-page__step-number'>{index + 1}</span>
+                            <h3>{step.title}</h3>
+                            <p>{step.text}</p>
+                        </li>
+                    ))}
+                </ol>
+            </section>
+
+            {/* Security and account connection */}
+            <section className='landing-page__section' id='security'>
+                <div className='landing-page__section-head'>
+                    <span className='landing-page__label'>Security</span>
+                    <h2 className='landing-page__section-title'>Your account stays yours</h2>
+                    <p className='landing-page__section-sub'>How TradersKit connects to your Deriv account</p>
+                </div>
+
+                <div className='landing-page__security'>
+                    {SECURITY_POINTS.map(point => (
+                        <article className='landing-page__card' key={point.title}>
+                            <div className='landing-page__card-icon'>{point.icon}</div>
+                            <h3>{point.title}</h3>
+                            <p>{point.text}</p>
+                        </article>
+                    ))}
+                </div>
+
+                <p className='landing-page__security-note'>
+                    Never share your Deriv password or API token with anyone, including us.
+                </p>
+            </section>
+
+            {/* Final call to action */}
+            <section className='landing-page__section landing-page__section--cta'>
+                <div className='landing-page__cta'>
+                    <span className='landing-page__label'>Get started</span>
+                    <h2 className='landing-page__section-title'>Ready to build your first bot?</h2>
+                    <p className='landing-page__section-sub'>Open the workspace and start on your demo account today.</p>
+
+                    <a className='landing-page__btn landing-page__btn--primary' href='/bot'>
+                        Open Trading Workspace
+                        <ArrowIcon />
+                    </a>
+
+                    <ul className='landing-page__checks landing-page__checks--small'>
+                        <li>
+                            <CheckIcon /> Runs in your browser
+                        </li>
+                        <li>
+                            <CheckIcon /> Demo account supported
+                        </li>
+                        <li>
+                            <CheckIcon /> Full workspace access
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            {/* Footer */}
+            <footer className='landing-page__footer'>
+                <div className='landing-page__footer-top'>
+                    <a className='landing-page__brand' href='/'>
+                        <span className='landing-page__brand-badge'>T</span>
+                        <span className='landing-page__brand-name'>
+                            Traders<span>Kit</span>
+                        </span>
+                    </a>
+
+                    <nav className='landing-page__footer-links' aria-label='Footer'>
+                        <a href='#features'>Features</a>
+                        <a href='#how-it-works'>How it works</a>
+                        <a href='#security'>Security</a>
+                        <a href='/bot'>Open Workspace</a>
+                    </nav>
+                </div>
+
+                <p className='landing-page__footer-risk'>
+                    Risk warning: trading involves risk and you can lose some or all of your money. Only trade with money
+                    you can afford to lose, and practise on a demo account first. Nothing on this site is financial advice.
+                </p>
+
+                <p className='landing-page__footer-note'>
+                    TradersKit is an independent third-party platform and is not operated by Deriv. © {new Date().getFullYear()}{' '}
+                    TradersKit.
+                </p>
+            </footer>
         </main>
     );
 };
