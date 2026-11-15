@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import type { MouseEvent } from 'react';
+import { generateOAuthURL } from '@/components/shared';
 import './landing.scss';
 
 const HEADLINE = 'Welcome to TradersKit';
@@ -35,6 +37,63 @@ const useTypedText = (text: string, speed = 70) => {
     }, [count, text, speed]);
 
     return text.slice(0, count);
+};
+
+/**
+ * True when the browser already holds a logged-in Deriv account.
+ * App.tsx stores `active_loginid` after a successful OAuth login.
+ */
+const hasActiveAccount = () => {
+    try {
+        return Boolean(window.localStorage.getItem('active_loginid'));
+    } catch {
+        return false;
+    }
+};
+
+/**
+ * Sends the visitor to Deriv's login page (using the same OAuth helper as the
+ * header's "Log in" button), or straight to the workspace if already logged in.
+ * The OAuth settings are not changed here.
+ */
+const useWorkspaceEntry = () => {
+    const [isRedirecting, setIsRedirecting] = useState(false);
+
+    const openWorkspace = useCallback(
+        async (event: MouseEvent<HTMLAnchorElement>) => {
+            // Let the browser handle ctrl/cmd-click and middle-click normally.
+            if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+
+            event.preventDefault();
+            if (isRedirecting) return;
+
+            if (hasActiveAccount()) {
+                window.location.assign('/bot');
+                return;
+            }
+
+            try {
+                setIsRedirecting(true);
+                const oauthUrl = await generateOAuthURL();
+
+                if (oauthUrl) {
+                    window.location.replace(oauthUrl);
+                    return;
+                }
+
+                console.error('Failed to generate OAuth URL');
+            } catch (error) {
+                console.error('Login redirection failed:', error);
+            }
+
+            // Fallback: open the workspace, where the header still has Log in / Sign up.
+            setIsRedirecting(false);
+            window.location.assign('/bot');
+        },
+        [isRedirecting]
+    );
+
+    return openWorkspace;
 };
 
 /* ---------- Icons ---------- */
@@ -214,6 +273,38 @@ const LandingPage = () => {
     const typed = useTypedText(HEADLINE);
     const plainPart = typed.slice(0, PLAIN_LENGTH);
     const brandPart = typed.slice(PLAIN_LENGTH);
+    const openWorkspace = useWorkspaceEntry();
+
+    // When Deriv sends the visitor back with ?code=...&state=..., App.tsx finishes
+    // the login and then redirects to /bot. Show a short message while that happens.
+    const [isSigningIn, setIsSigningIn] = useState(() => {
+        const params = new URLSearchParams(window.location.search);
+        return Boolean(params.get('code') && params.get('state'));
+    });
+
+    useEffect(() => {
+        if (!isSigningIn) return;
+        // Safety net: if the login never completes, show the landing page again.
+        const timer = window.setTimeout(() => setIsSigningIn(false), 30000);
+        return () => window.clearTimeout(timer);
+    }, [isSigningIn]);
+
+    if (isSigningIn) {
+        return (
+            <main
+                className='landing-page'
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    padding: '0 24px',
+                }}
+            >
+                <p style={{ fontSize: 20, color: '#a8b6cc' }}>Signing you in to Deriv…</p>
+            </main>
+        );
+    }
 
     return (
         <main className='landing-page'>
@@ -232,7 +323,7 @@ const LandingPage = () => {
                     <a href='#security'>Security</a>
                 </nav>
 
-                <a className='landing-page__nav-cta' href='/bot'>
+                <a className='landing-page__nav-cta' href='/bot' onClick={openWorkspace}>
                     Open Workspace
                     <ArrowIcon />
                 </a>
@@ -271,7 +362,7 @@ const LandingPage = () => {
                 </p>
 
                 <div className='landing-page__actions'>
-                    <a className='landing-page__btn landing-page__btn--primary' href='/bot'>
+                    <a className='landing-page__btn landing-page__btn--primary' href='/bot' onClick={openWorkspace}>
                         Open Trading Workspace
                         <ArrowIcon />
                     </a>
@@ -391,7 +482,7 @@ const LandingPage = () => {
                     <h2 className='landing-page__section-title'>Ready to build your first bot?</h2>
                     <p className='landing-page__section-sub'>Open the workspace and start on your demo account today.</p>
 
-                    <a className='landing-page__btn landing-page__btn--primary' href='/bot'>
+                    <a className='landing-page__btn landing-page__btn--primary' href='/bot' onClick={openWorkspace}>
                         Open Trading Workspace
                         <ArrowIcon />
                     </a>
@@ -424,7 +515,9 @@ const LandingPage = () => {
                         <a href='#features'>Features</a>
                         <a href='#how-it-works'>How it works</a>
                         <a href='#security'>Security</a>
-                        <a href='/bot'>Open Workspace</a>
+                        <a href='/bot' onClick={openWorkspace}>
+                            Open Workspace
+                        </a>
                     </nav>
                 </div>
 
