@@ -303,6 +303,14 @@ $button-gradient: linear-gradient(135deg, $blue-500 0%, #4f46e5 100%);
                 color: $cyan-400;
             }
         }
+
+        &--small {
+            margin-top: 26px;
+
+            li {
+                font-size: 13px;
+            }
+        }
     }
 
     &__risk {
@@ -318,6 +326,10 @@ $button-gradient: linear-gradient(135deg, $blue-500 0%, #4f46e5 100%);
 
         &--why {
             padding-top: 24px;
+        }
+
+        &--cta {
+            padding-top: 40px;
         }
     }
 
@@ -362,13 +374,29 @@ $button-gradient: linear-gradient(135deg, $blue-500 0%, #4f46e5 100%);
         line-height: 1.7;
     }
 
-    /* ---------- Feature cards ---------- */
+    /* ---------- Feature and security cards ---------- */
     &__features {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 22px;
         max-width: 1200px;
         margin: 0 auto;
+    }
+
+    &__security {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    &__security-note {
+        max-width: 700px;
+        margin: 36px auto 0;
+        color: $text-dim;
+        font-size: 14px;
+        text-align: center;
     }
 
     &__card {
@@ -468,14 +496,124 @@ $button-gradient: linear-gradient(135deg, $blue-500 0%, #4f46e5 100%);
         color: $cyan-400;
     }
 
+    /* ---------- How it works ---------- */
+    &__steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 22px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0;
+        list-style: none;
+    }
+
+    &__step {
+        position: relative;
+        padding: 30px 24px;
+        border: 1px solid rgba(96, 165, 250, 0.16);
+        border-radius: 22px;
+        background: rgba(10, 22, 44, 0.75);
+
+        h3 {
+            margin: 20px 0 10px;
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        p {
+            margin: 0;
+            color: $text-muted;
+            font-size: 14.5px;
+            line-height: 1.7;
+        }
+    }
+
+    &__step-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: $button-gradient;
+        font-size: 18px;
+        font-weight: 800;
+        box-shadow: 0 0 20px rgba(37, 99, 235, 0.45);
+    }
+
+    /* ---------- Final call to action ---------- */
+    &__cta {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 64px 32px;
+        border: 1px solid rgba(59, 130, 246, 0.35);
+        border-radius: 32px;
+        text-align: center;
+        background:
+            radial-gradient(ellipse 70% 90% at 50% 0%, rgba(37, 99, 235, 0.32), transparent 75%),
+            rgba(9, 21, 43, 0.85);
+
+        .landing-page__section-sub {
+            margin-bottom: 32px;
+        }
+    }
+
+    /* ---------- Footer ---------- */
+    &__footer {
+        padding: 48px 6% 36px;
+        border-top: 1px solid rgba(96, 165, 250, 0.14);
+        background: rgba(3, 8, 18, 0.9);
+    }
+
+    &__footer-top {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        max-width: 1200px;
+        margin: 0 auto 28px;
+    }
+
+    &__footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 26px;
+
+        a {
+            color: $text-muted;
+            font-size: 14px;
+            transition: color 0.2s ease;
+
+            &:hover {
+                color: $text-main;
+            }
+        }
+    }
+
+    &__footer-risk,
+    &__footer-note {
+        max-width: 1200px;
+        margin: 0 auto 12px;
+        color: $text-dim;
+        font-size: 12.5px;
+        line-height: 1.7;
+    }
+
     /* ---------- Tablet ---------- */
     @media (max-width: 1050px) {
-        &__features {
+        &__features,
+        &__steps {
             grid-template-columns: repeat(2, 1fr);
         }
 
         &__why-grid {
             grid-template-columns: repeat(2, 1fr);
+        }
+
+        &__security {
+            grid-template-columns: 1fr;
+            max-width: 560px;
         }
     }
 
@@ -498,12 +636,17 @@ $button-gradient: linear-gradient(135deg, $blue-500 0%, #4f46e5 100%);
         }
 
         &__features,
+        &__steps,
         &__why-grid {
             grid-template-columns: 1fr;
         }
 
         &__why {
             padding: 36px 20px;
+        }
+
+        &__cta {
+            padding: 44px 20px;
         }
     }
 }
