@@ -1,0 +1,33 @@
+.landing-page {
+    min-height: 100vh;
+    padding: 80px 8%;
+    background: #071225;
+    color: #ffffff;
+    font-family: Inter, sans-serif;
+
+    h1 {
+        font-size: clamp(36px, 6vw, 64px);
+        font-weight: 800;
+        margin-bottom: 20px;
+    }
+
+    p {
+        color: #a8b6cc;
+        font-size: 20px;
+        margin-bottom: 32px;
+    }
+
+    a {
+        display: inline-block;
+        padding: 14px 28px;
+        border-radius: 8px;
+        background: #2563eb;
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+    a:hover {
+        background: #1d4ed8;
+    }
+}
