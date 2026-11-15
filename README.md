@@ -1,3 +1,4 @@
+
 # Deriv Trading Bot
 
 A self-hosted, visual trading-bot builder on the Deriv WebSocket API. Drag-and-drop
