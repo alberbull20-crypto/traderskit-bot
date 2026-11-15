@@ -1,3 +1,4 @@
+import './landing.scss';
 const LandingPage = () => {
     return (
         <main className='landing-page'>
