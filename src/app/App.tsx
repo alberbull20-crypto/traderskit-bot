@@ -1,9 +1,9 @@
-
 import { lazy, Suspense } from 'react';
 import React from 'react';
 import {
     createBrowserRouter,
     createRoutesFromElements,
+    Navigate,
     Route,
     RouterProvider,
     Outlet,
@@ -56,27 +56,45 @@ const AppProviders = () => (
 );
 
 // The static preview build is served under /bot/preview.
-const routerBasename = isPreviewMode() ? PREVIEW_BASE_PATH : undefined;
+const previewMode = isPreviewMode();
+const routerBasename = previewMode ? PREVIEW_BASE_PATH : undefined;
 
-const router = createBrowserRouter(
-    createRoutesFromElements(
-        <Route path='/' element={<AppProviders />}>
-            {/* Public landing page */}
-            <Route index element={<LandingPage />} />
-
-            {/* Existing Deriv trading workspace */}
-            <Route path='bot' element={<Layout />}>
-                <Route index element={<AppRoot />} />
-            </Route>
-
-            {/* Deriv App Builder preview */}
-            <Route path='preview' element={<Layout />}>
-                <Route index element={<AppRoot />} />
-            </Route>
+/**
+ * Preview mode: the workspace lives at the root of the preview base path,
+ * exactly like the original Deriv Bot template.
+ *
+ * Normal mode: landing page at /, workspace at /bot and /preview.
+ */
+const routes = previewMode ? (
+    <Route path='/' element={<AppProviders />}>
+        <Route element={<Layout />}>
+            <Route index element={<AppRoot />} />
         </Route>
-    ),
-    { basename: routerBasename }
+        <Route path='*' element={<Navigate to='/' replace />} />
+    </Route>
+) : (
+    <Route path='/' element={<AppProviders />}>
+        {/* Public landing page */}
+        <Route index element={<LandingPage />} />
+
+        {/* Existing Deriv trading workspace */}
+        <Route path='bot' element={<Layout />}>
+            <Route index element={<AppRoot />} />
+        </Route>
+
+        {/* Deriv App Builder preview */}
+        <Route path='preview' element={<Layout />}>
+            <Route index element={<AppRoot />} />
+        </Route>
+
+        {/* Unknown paths go back to the landing page */}
+        <Route path='*' element={<Navigate to='/' replace />} />
+    </Route>
 );
+
+const router = createBrowserRouter(createRoutesFromElements(routes), {
+    basename: routerBasename,
+});
 
 /**
  * Main application component.
@@ -126,7 +144,9 @@ function App() {
                 cleanupUrl(window.location.origin);
 
                 if (authenticationSucceeded) {
-                    window.location.replace(`${window.location.origin}/bot`);
+                    // Normal site: workspace is at /bot. Preview build: stay under its base path.
+                    const postLoginPath = previewMode ? PREVIEW_BASE_PATH : '/bot';
+                    window.location.replace(`${window.location.origin}${postLoginPath}`);
                 }
             }
         };
