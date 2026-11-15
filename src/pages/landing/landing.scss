@@ -311,6 +311,174 @@ $button-gradient: linear-gradient(135deg, $blue-500 0%, #4f46e5 100%);
         font-size: 12px;
     }
 
+    /* ---------- Sections (shared) ---------- */
+    &__section {
+        padding: 96px 6%;
+        scroll-margin-top: 72px;
+
+        &--why {
+            padding-top: 24px;
+        }
+    }
+
+    &__section-head {
+        max-width: 760px;
+        margin: 0 auto 52px;
+        text-align: center;
+    }
+
+    &__label {
+        display: inline-block;
+        padding: 6px 14px;
+        margin-bottom: 18px;
+        border: 1px solid rgba(34, 211, 238, 0.4);
+        border-radius: 999px;
+        background: rgba(34, 211, 238, 0.08);
+        color: $cyan-400;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+
+    &__section-title {
+        margin: 0 0 12px;
+        font-size: clamp(28px, 4.2vw, 46px);
+        font-weight: 800;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+    }
+
+    &__section-sub {
+        margin: 0 0 14px;
+        color: $text-muted;
+        font-size: clamp(16px, 1.8vw, 19px);
+    }
+
+    &__section-text {
+        margin: 0;
+        color: $text-dim;
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    /* ---------- Feature cards ---------- */
+    &__features {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 22px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    &__card {
+        padding: 30px 26px;
+        border: 1px solid rgba(96, 165, 250, 0.18);
+        border-radius: 22px;
+        background: linear-gradient(160deg, rgba(20, 38, 72, 0.75), rgba(8, 18, 38, 0.9));
+        box-shadow: 0 18px 40px rgba(2, 8, 20, 0.45);
+        transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+
+        &:hover {
+            transform: translateY(-6px);
+            border-color: rgba(34, 211, 238, 0.5);
+            box-shadow: 0 22px 48px rgba(37, 99, 235, 0.22);
+        }
+
+        h3 {
+            margin: 22px 0 8px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        p {
+            margin: 14px 0 0;
+            color: $text-muted;
+            font-size: 14.5px;
+            line-height: 1.7;
+        }
+    }
+
+    &__card-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 62px;
+        height: 62px;
+        border: 1px solid rgba(34, 211, 238, 0.3);
+        border-radius: 18px;
+        background: rgba(34, 211, 238, 0.08);
+        color: $cyan-400;
+    }
+
+    &__card-tag {
+        color: $blue-300;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    /* ---------- Why TradersKit ---------- */
+    &__why {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 56px 40px;
+        border: 1px solid rgba(96, 165, 250, 0.14);
+        border-radius: 32px;
+        background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(37, 99, 235, 0.14), transparent 70%), rgba(8, 18, 38, 0.7);
+
+        .landing-page__section-head {
+            margin-bottom: 40px;
+        }
+    }
+
+    &__why-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+    }
+
+    &__why-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 18px 20px;
+        border: 1px solid rgba(96, 165, 250, 0.16);
+        border-radius: 16px;
+        background: rgba(15, 30, 58, 0.7);
+        color: #e2eaf7;
+        font-size: 14.5px;
+        line-height: 1.45;
+        transition: border-color 0.2s ease, transform 0.2s ease;
+
+        &:hover {
+            border-color: rgba(34, 211, 238, 0.5);
+            transform: translateY(-2px);
+        }
+    }
+
+    &__why-icon {
+        display: inline-flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgba(34, 211, 238, 0.14);
+        color: $cyan-400;
+    }
+
+    /* ---------- Tablet ---------- */
+    @media (max-width: 1050px) {
+        &__features {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        &__why-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
     /* ---------- Mobile ---------- */
     @media (max-width: 760px) {
         &__nav-links {
@@ -323,6 +491,19 @@ $button-gradient: linear-gradient(135deg, $blue-500 0%, #4f46e5 100%);
 
         &__hero {
             padding-top: 56px;
+        }
+
+        &__section {
+            padding: 64px 5%;
+        }
+
+        &__features,
+        &__why-grid {
+            grid-template-columns: 1fr;
+        }
+
+        &__why {
+            padding: 36px 20px;
         }
     }
 }
