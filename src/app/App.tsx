@@ -1,6 +1,13 @@
+
 import { lazy, Suspense } from 'react';
 import React from 'react';
-import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router';
+import {
+    createBrowserRouter,
+    createRoutesFromElements,
+    Route,
+    RouterProvider,
+    Outlet,
+} from 'react-router';
 import { cleanupUrl, handleOAuthCallback } from '@/external/deriv-core';
 import ChunkLoader from '@/components/loader/chunk-loader';
 import LocalStorageSyncWrapper from '@/components/localStorage-sync-wrapper';
@@ -16,63 +23,65 @@ import './app-root.scss';
 
 const Layout = lazy(() => import('../components/layout'));
 const AppRoot = lazy(() => import('./app-root'));
+const LandingPage = lazy(() => import('../pages/landing'));
 
 /**
- * Component wrapper to handle language URL parameter
- * Uses the useLanguageFromURL hook to process language switching
+ * Handles language switching from URL parameters.
  */
 const LanguageHandler = ({ children }: { children: React.ReactNode }) => {
     useLanguageFromURL();
     return <>{children}</>;
 };
 
-// The static preview build is served under /bot/preview (see rsbuild.config.ts
-// assetPrefix), so React Router must resolve routes under that prefix. Standalone
-// partner deploys are served at the root, so no basename there.
+/**
+ * Shared providers for all application routes.
+ */
+const AppProviders = () => (
+    <Suspense
+        fallback={<ChunkLoader message={localize('Please wait while we connect to the server...')} />}
+    >
+        <TranslationProvider defaultLang='EN' i18nInstance={i18nInstance}>
+            <LanguageHandler>
+                <StoreProvider>
+                    <LocalStorageSyncWrapper>
+                        <RoutePromptDialog />
+                        <CoreStoreProvider>
+                            <Outlet />
+                        </CoreStoreProvider>
+                    </LocalStorageSyncWrapper>
+                </StoreProvider>
+            </LanguageHandler>
+        </TranslationProvider>
+    </Suspense>
+);
+
+// The static preview build is served under /bot/preview.
 const routerBasename = isPreviewMode() ? PREVIEW_BASE_PATH : undefined;
 
 const router = createBrowserRouter(
     createRoutesFromElements(
-        <Route
-            path='/'
-            element={
-                <Suspense
-                    fallback={<ChunkLoader message={localize('Please wait while we connect to the server...')} />}
-                >
-                    <TranslationProvider defaultLang='EN' i18nInstance={i18nInstance}>
-                        <LanguageHandler>
-                            <StoreProvider>
-                                <LocalStorageSyncWrapper>
-                                    <RoutePromptDialog />
-                                    <CoreStoreProvider>
-                                        <Layout />
-                                    </CoreStoreProvider>
-                                </LocalStorageSyncWrapper>
-                            </StoreProvider>
-                        </LanguageHandler>
-                    </TranslationProvider>
-                </Suspense>
-            }
-        >
-            {/* All child routes will be passed as children to Layout */}
-            <Route index element={<AppRoot />} />
-            {/* App Builder embeds the template at /preview — render the same app shell */}
-            <Route path='preview' element={<AppRoot />} />
+        <Route path='/' element={<AppProviders />}>
+            {/* Public landing page */}
+            <Route index element={<LandingPage />} />
+
+            {/* Existing Deriv trading workspace */}
+            <Route path='bot' element={<Layout />}>
+                <Route index element={<AppRoot />} />
+            </Route>
+
+            {/* Deriv App Builder preview */}
+            <Route path='preview' element={<Layout />}>
+                <Route index element={<AppRoot />} />
+            </Route>
         </Route>
     ),
     { basename: routerBasename }
 );
 
 /**
- * Main App component
- *
- * Responsibilities:
- * 1. OAuth callback handling (via vendored deriv-core handleOAuthCallback)
- * 2. Account switching from URL (via useAccountSwitching hook)
- * 3. Router provider setup
+ * Main application component.
  */
 function App() {
-    // Handle account switching via URL parameter
     useAccountSwitching();
 
     React.useEffect(() => {
@@ -80,6 +89,8 @@ function App() {
         if (!urlParams.has('code')) return;
 
         const handleCallback = async () => {
+            let authenticationSucceeded = false;
+
             try {
                 const authInfo = await handleOAuthCallback(window.location.href, {
                     clientId: process.env.NEXT_PUBLIC_DERIV_APP_ID || '',
@@ -92,14 +103,20 @@ function App() {
 
                 if (accounts && accounts.length > 0) {
                     DerivWSAccountsService.storeAccounts(accounts);
+
                     const firstAccount = accounts[0];
                     localStorage.setItem('active_loginid', firstAccount.account_id);
+
                     const isDemo =
-                        firstAccount.account_id.startsWith('VRT') || firstAccount.account_id.startsWith('VRTC');
+                        firstAccount.account_id.startsWith('VRT') ||
+                        firstAccount.account_id.startsWith('VRTC');
+
                     localStorage.setItem('account_type', isDemo ? 'demo' : 'real');
 
                     const { api_base } = await import('@/external/bot-skeleton');
                     await api_base.init(true);
+
+                    authenticationSucceeded = true;
                 } else {
                     console.error('No accounts returned after authentication');
                 }
@@ -107,6 +124,10 @@ function App() {
                 console.error('OAuth callback error:', error);
             } finally {
                 cleanupUrl(window.location.origin);
+
+                if (authenticationSucceeded) {
+                    window.location.replace(`${window.location.origin}/bot`);
+                }
             }
         };
 
