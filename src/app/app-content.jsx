@@ -23,6 +23,7 @@ import BotStopped from '../components/bot-stopped';
 import BotBuilder from '../pages/bot-builder';
 import Main from '../pages/main';
 import './app.scss';
+import './traderskit-theme.scss';
 import '../components/bot-notification/bot-notification.scss';
 
 // App Builder live-preview branding listener. Mounted only in the preview deployment
@@ -38,7 +39,7 @@ const AppContent = observer(() => {
 
     const store = useStore();
     const { app, transactions, common, client } = store;
-    const { is_dark_mode_on } = useThemeSwitcher();
+    const { is_dark_mode_on, setTheme } = useThemeSwitcher();
 
     const { recovered_transactions, recoverPendingContracts } = transactions;
     const is_subscribed_to_msg_listener = React.useRef(false);
@@ -47,6 +48,19 @@ const AppContent = observer(() => {
 
     // Initialize dev mode keyboard shortcuts
     useDevMode();
+
+    // TradersKit: switch to the dark navy theme once for each browser.
+    // After this one-time switch, the theme toggle works as normal.
+    useEffect(() => {
+        try {
+            if (!localStorage.getItem('traderskit_theme_initialised')) {
+                localStorage.setItem('traderskit_theme_initialised', '1');
+                setTheme('dark');
+            }
+        } catch (error) {
+            console.error('Could not set the default theme:', error);
+        }
+    }, [setTheme]);
 
     // Warn (once) when the OAuth app id isn't configured, so a developer running
     // locally understands why Log in / Sign up are disabled. Skipped inside the
