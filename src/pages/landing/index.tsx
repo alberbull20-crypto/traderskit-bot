@@ -52,15 +52,15 @@ const hasActiveAccount = () => {
 };
 
 /**
- * Sends the visitor to Deriv's login page (using the same OAuth helper as the
- * header's "Log in" button), or straight to the workspace if already logged in.
- * The OAuth settings are not changed here.
+ * Builds click handlers that send the visitor to Deriv's login or registration page
+ * (using the same OAuth helper as the header's buttons), or straight to the workspace
+ * if they are already logged in. The OAuth settings are not changed here.
  */
 const useWorkspaceEntry = () => {
     const [isRedirecting, setIsRedirecting] = useState(false);
 
-    const openWorkspace = useCallback(
-        async (event: MouseEvent<HTMLAnchorElement>) => {
+    const createHandler = useCallback(
+        (mode: 'login' | 'registration') => async (event: MouseEvent<HTMLAnchorElement>) => {
             // Let the browser handle ctrl/cmd-click and middle-click normally.
             if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
 
@@ -74,7 +74,7 @@ const useWorkspaceEntry = () => {
 
             try {
                 setIsRedirecting(true);
-                const oauthUrl = await generateOAuthURL();
+                const oauthUrl = mode === 'registration' ? await generateOAuthURL('registration') : await generateOAuthURL();
 
                 if (oauthUrl) {
                     window.location.replace(oauthUrl);
@@ -83,7 +83,7 @@ const useWorkspaceEntry = () => {
 
                 console.error('Failed to generate OAuth URL');
             } catch (error) {
-                console.error('Login redirection failed:', error);
+                console.error('Redirection to Deriv failed:', error);
             }
 
             // Fallback: open the workspace, where the header still has Log in / Sign up.
@@ -93,7 +93,10 @@ const useWorkspaceEntry = () => {
         [isRedirecting]
     );
 
-    return openWorkspace;
+    return {
+        openWorkspace: createHandler('login'),
+        openSignup: createHandler('registration'),
+    };
 };
 
 /* ---------- Icons ---------- */
@@ -273,7 +276,7 @@ const LandingPage = () => {
     const typed = useTypedText(HEADLINE);
     const plainPart = typed.slice(0, PLAIN_LENGTH);
     const brandPart = typed.slice(PLAIN_LENGTH);
-    const openWorkspace = useWorkspaceEntry();
+    const { openWorkspace, openSignup } = useWorkspaceEntry();
 
     // When Deriv sends the visitor back with ?code=...&state=..., App.tsx finishes
     // the login and then redirects to /bot. Show a short message while that happens.
@@ -366,8 +369,8 @@ const LandingPage = () => {
                         Open Trading Workspace
                         <ArrowIcon />
                     </a>
-                    <a className='landing-page__btn landing-page__btn--ghost' href='#features'>
-                        Explore features
+                    <a className='landing-page__btn landing-page__btn--ghost' href='/bot' onClick={openSignup}>
+                        Sign up
                     </a>
                 </div>
 
@@ -482,10 +485,15 @@ const LandingPage = () => {
                     <h2 className='landing-page__section-title'>Ready to build your first bot?</h2>
                     <p className='landing-page__section-sub'>Open the workspace and start on your demo account today.</p>
 
-                    <a className='landing-page__btn landing-page__btn--primary' href='/bot' onClick={openWorkspace}>
-                        Open Trading Workspace
-                        <ArrowIcon />
-                    </a>
+                    <div className='landing-page__actions'>
+                        <a className='landing-page__btn landing-page__btn--primary' href='/bot' onClick={openWorkspace}>
+                            Open Trading Workspace
+                            <ArrowIcon />
+                        </a>
+                        <a className='landing-page__btn landing-page__btn--ghost' href='/bot' onClick={openSignup}>
+                            Sign up
+                        </a>
+                    </div>
 
                     <ul className='landing-page__checks landing-page__checks--small'>
                         <li>
