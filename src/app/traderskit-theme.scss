@@ -1,36 +1,61 @@
 // TradersKit workspace theme: dark navy with blue accents.
 // Only applies in dark mode, so the light theme and the landing page are untouched.
+// The selector starts with :root so it outranks the template's own `:root .theme--dark` rules.
 
 $navy-950: #040a17;
 $navy-900: #071225;
 $navy-800: #0b1a33;
+$navy-750: #0e1f3d;
 $navy-700: #12254a;
+$navy-600: #183166;
 $blue-600: #1d4ed8;
 $blue-500: #2563eb;
 $blue-400: #3b82f6;
-$blue-300: #60a5fa;
 $text-main: #ffffff;
 $text-body: #e2eaf7;
 $text-muted: #a8b6cc;
 $line: rgba(96, 165, 250, 0.18);
+$line-soft: rgba(96, 165, 250, 0.12);
 
-body.theme--dark {
+:root body.theme--dark {
     // Surfaces
     --general-main-1: #{$navy-900};
     --general-main-2: #{$navy-800};
+    --general-main-3: #{$navy-750};
     --du-general-main-2: #{$navy-800};
     --general-section-1: #{$navy-950};
-    --general-section-2: #{$navy-800};
+    --general-section-2: #{$navy-900};
+    --general-section-3: #{$navy-750};
+    --general-section-4: #{$navy-750};
+    --general-section-5: #{$navy-750};
+    --general-disabled: #{$navy-750};
+    --general-hover: #{$navy-700};
+    --general-active: #{$navy-600};
+
+    // States and fills
+    --state-normal: #{$navy-900};
+    --state-hover: #{$navy-700};
+    --state-active: #{$navy-600};
+    --state-disabled: #{$navy-750};
+    --fill-normal: #{$navy-900};
+    --fill-normal-1: #{$navy-750};
 
     // Text
     --text-prominent: #{$text-main};
     --text-general: #{$text-body};
     --text-less-prominent: #{$text-muted};
 
-    // Buttons and lines
+    // Buttons: blue instead of the template's red hover and pressed states
     --button-primary-default: #{$blue-500};
     --button-primary-hover: #{$blue-600};
+    --button-primary-light-default: rgba(37, 99, 235, 0.16);
+    --button-primary-light-hover: rgba(37, 99, 235, 0.28);
+    --button-tertiary-hover: rgba(37, 99, 235, 0.14);
+
+    // Lines
     --border-normal: #{$line};
+    --border-divider: #{$line-soft};
+    --border-disabled: #{$line-soft};
 
     background: $navy-950;
 
