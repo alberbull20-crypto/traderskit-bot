@@ -1,0 +1,39 @@
+.coming-soon {
+    padding: 2.4rem;
+    overflow-y: auto;
+    color: var(--text-general);
+
+    &__card {
+        max-width: 72rem;
+        margin: 0 auto;
+        padding: 3.2rem;
+        border: 1px solid var(--border-normal);
+        border-radius: 1.6rem;
+        background: var(--general-main-2);
+
+        h2 {
+            margin: 1.2rem 0 0.8rem;
+            font-size: 2.8rem;
+            color: var(--text-prominent);
+        }
+
+        p {
+            margin: 0;
+            font-size: 1.6rem;
+            line-height: 1.6;
+            color: var(--text-less-prominent);
+        }
+    }
+
+    &__label {
+        display: inline-block;
+        padding: 0.4rem 1.2rem;
+        border: 1px solid #22d3ee;
+        border-radius: 999px;
+        color: #22d3ee;
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+    }
+}
