@@ -65,7 +65,7 @@ $line-soft: rgba(96, 165, 250, 0.12);
         background: $navy-950;
     }
 
-    // Tab bar: Dashboard, Bot Builder, Charts, Tutorials
+    // Tab bar: Dashboard, Bot Builder, Charts, Tutorials and the TradersKit tabs
     .main__container {
         .dc-tabs__list {
             background: $navy-950;
@@ -85,6 +85,25 @@ $line-soft: rgba(96, 165, 250, 0.12);
         .dc-tabs__active {
             background: $navy-900;
             box-shadow: inset 0 3px 0 $blue-400;
+        }
+    }
+}
+
+// Desktop tab bar: with many tabs, scroll sideways instead of running under the Run panel.
+@media (min-width: 1025px) {
+    .main__container {
+        .dc-tabs__list {
+            flex-wrap: nowrap;
+            max-width: calc(100% - 55rem);
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: thin;
+        }
+
+        .dc-tabs__item {
+            flex-shrink: 0;
+            padding: 0 1.4rem;
+            white-space: nowrap;
         }
     }
 }
