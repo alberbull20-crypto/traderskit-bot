@@ -4,13 +4,18 @@ $indigo: #818cf8;
 $amber: #f59e0b;
 
 .analysis-tool {
-    height: calc(100vh - 19rem);
+    // Solid background above the Bot Builder workspace, which the template keeps running behind the tabs
+    position: relative;
+    z-index: 1;
+    background: var(--general-main-1);
+    height: var(--tab-content-height, calc(100vh - 19rem));
     padding: 2rem 2.4rem 3rem;
     overflow-y: auto;
     color: var(--text-general);
 
     @media (max-width: 900px) {
         height: auto;
+        min-height: var(--tab-content-height-mobile, 60vh);
         padding: 1.6rem;
     }
 
