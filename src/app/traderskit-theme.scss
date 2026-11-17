@@ -11,6 +11,8 @@ $navy-600: #183166;
 $blue-600: #1d4ed8;
 $blue-500: #2563eb;
 $blue-400: #3b82f6;
+$cyan-400: #22d3ee;
+$indigo-500: #4f46e5;
 $text-main: #ffffff;
 $text-body: #e2eaf7;
 $text-muted: #a8b6cc;
@@ -18,6 +20,7 @@ $line: rgba(96, 165, 250, 0.18);
 $line-soft: rgba(96, 165, 250, 0.12);
 $scroll-thumb: #2b4270;
 $scroll-thumb-hover: #3b5a99;
+$button-gradient: linear-gradient(135deg, $blue-500 0%, $indigo-500 100%);
 
 :root body.theme--dark {
     // Surfaces
@@ -59,22 +62,37 @@ $scroll-thumb-hover: #3b5a99;
     --border-divider: #{$line-soft};
     --border-disabled: #{$line-soft};
 
-    background: $navy-950;
+    // Page background: soft blue glows over deep navy, like the landing page
+    background:
+        radial-gradient(ellipse 70% 45% at 50% -8%, rgba(37, 99, 235, 0.24), transparent 70%),
+        radial-gradient(ellipse 40% 35% at 92% 35%, rgba(99, 102, 241, 0.12), transparent 70%),
+        radial-gradient(ellipse 40% 35% at 6% 80%, rgba(34, 211, 238, 0.07), transparent 70%),
+        $navy-950;
+    background-attachment: fixed;
 
-    // Page behind the workspace
+    // Let the page background show through
     .bot-dashboard,
     .main {
-        background: $navy-950;
+        background: transparent;
+    }
+
+    // Header
+    .app-header {
+        background: linear-gradient(180deg, rgba(11, 26, 51, 0.92), rgba(7, 18, 37, 0.92)) !important;
+        border-bottom: 1px solid $line;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 30px rgba(2, 8, 20, 0.4);
     }
 
     // Tab bar: Dashboard, Bot Builder, Charts, Tutorials and the TradersKit tabs
     .main__container {
         .dc-tabs__list {
-            background: $navy-950;
+            background: transparent;
             border-bottom: 1px solid $line;
         }
 
         .dc-tabs__item {
+            font-weight: 600;
             transition:
                 background 0.2s ease,
                 color 0.2s ease;
@@ -85,61 +103,80 @@ $scroll-thumb-hover: #3b5a99;
         }
 
         .dc-tabs__active {
-            background: $navy-900;
-            box-shadow: inset 0 3px 0 $blue-400;
+            background: linear-gradient(180deg, rgba(37, 99, 235, 0.3) 0%, $navy-900 100%);
+            box-shadow:
+                inset 0 3px 0 $blue-400,
+                0 -10px 28px rgba(37, 99, 235, 0.22);
+        }
+    }
+
+    // Run panel
+    .main__run-strategy-wrapper {
+        .animation__button#db-animation__run-button {
+            background: $button-gradient;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+        }
+
+        .animation__container {
+            border: 1px solid $line;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(2, 8, 20, 0.45);
         }
     }
 }
 
-// Desktop tab bar: with many tabs, scroll sideways instead of running under the Run panel.
-@media (min-width: 1025px) {
-    .main__container {
-        .dc-tabs__list {
-            flex-wrap: nowrap;
-            max-width: calc(100% - 55rem);
-            overflow-x: auto;
-            overflow-y: hidden;
+// Tab bar: with many tabs, scroll sideways instead of wrapping.
+.main__container {
+    .dc-tabs__list {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
 
-            // Firefox
-            scrollbar-width: thin;
-            scrollbar-color: $scroll-thumb transparent;
-        }
-
-        .dc-tabs__item {
-            flex-shrink: 0;
-            padding: 0 1.4rem;
-            white-space: nowrap;
-        }
+        // Firefox
+        scrollbar-width: thin;
+        scrollbar-color: $scroll-thumb transparent;
     }
 
-    // Chrome, Edge and Safari: a thin navy scrollbar with no arrow buttons
-    @supports selector(::-webkit-scrollbar) {
-        .main__container .dc-tabs__list {
-            scrollbar-width: auto;
-            scrollbar-color: auto;
+    .dc-tabs__item {
+        flex-shrink: 0;
+        padding: 0 1.4rem;
+        white-space: nowrap;
+    }
+}
 
-            &::-webkit-scrollbar {
-                height: 6px;
+// Only when the Run panel sits in the top-right corner, keep the tabs clear of it.
+.bot-dashboard:has(.main__run-strategy-wrapper) .main__container .dc-tabs__list {
+    max-width: calc(100% - 55rem);
+}
+
+// Chrome, Edge and Safari: a thin navy scrollbar with no arrow buttons
+@supports selector(::-webkit-scrollbar) {
+    .main__container .dc-tabs__list {
+        scrollbar-width: auto;
+        scrollbar-color: auto;
+
+        &::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: $scroll-thumb;
+            border-radius: 3px;
+
+            &:hover {
+                background: $scroll-thumb-hover;
             }
+        }
 
-            &::-webkit-scrollbar-track {
-                background: transparent;
-            }
-
-            &::-webkit-scrollbar-thumb {
-                background: $scroll-thumb;
-                border-radius: 3px;
-
-                &:hover {
-                    background: $scroll-thumb-hover;
-                }
-            }
-
-            &::-webkit-scrollbar-button {
-                display: none;
-                width: 0;
-                height: 0;
-            }
+        &::-webkit-scrollbar-button {
+            display: none;
+            width: 0;
+            height: 0;
         }
     }
 }
