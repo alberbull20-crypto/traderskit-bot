@@ -76,11 +76,10 @@ $button-gradient: linear-gradient(135deg, $blue-500 0%, $indigo-500 100%);
         background: transparent;
     }
 
-    // Header
+    // Header (no blur effect: it trapped the account dropdown behind the tabs on phones)
     .app-header {
-        background: linear-gradient(180deg, rgba(11, 26, 51, 0.92), rgba(7, 18, 37, 0.92)) !important;
+        background: linear-gradient(180deg, rgba(11, 26, 51, 0.98), rgba(7, 18, 37, 0.98)) !important;
         border-bottom: 1px solid $line;
-        backdrop-filter: blur(10px);
         box-shadow: 0 8px 30px rgba(2, 8, 20, 0.4);
     }
 
@@ -130,6 +129,18 @@ $button-gradient: linear-gradient(135deg, $blue-500 0%, $indigo-500 100%);
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(2, 8, 20, 0.45);
         }
+    }
+}
+
+// Pages we added inside the tabs (Analysis Tool, Bulk Trader, Coming soon) must fill the whole tab area.
+// On wide screens the template lays the tab content out as a row, which otherwise shrinks them.
+.main__container {
+    .analysis-tool,
+    .coming-soon {
+        box-sizing: border-box;
+        flex: 1 1 100%;
+        width: 100%;
+        min-width: 0;
     }
 }
 
