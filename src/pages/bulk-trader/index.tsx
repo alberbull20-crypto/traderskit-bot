@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { api_base } from '@/external/bot-skeleton';
 import { useApiBase } from '@/hooks/useApiBase';
+import { isVirtualAccount } from '@/utils/account-helpers';
 import '../analysis-tool/analysis-tool.scss';
 import './bulk-trader.scss';
 
@@ -163,8 +164,9 @@ const BulkTrader = () => {
 
     const rootRef = useRef(null);
 
+    // Same check the header uses to show "Demo account"
     const login_prefix = activeLoginid ? String(activeLoginid).slice(0, 3).toUpperCase() : '';
-    const is_demo = login_prefix === 'VRT';
+    const is_demo = Boolean(activeLoginid) && Boolean(isVirtualAccount(String(activeLoginid)));
     const currency = authData?.currency || 'USD';
     const type_config = TRADE_TYPES[trade_type];
 
