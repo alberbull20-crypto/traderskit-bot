@@ -1,7 +1,17 @@
 .coming-soon {
+    // Solid background above the Bot Builder workspace, which the template keeps running behind the tabs
+    position: relative;
+    z-index: 1;
+    background: var(--general-main-1);
+    height: var(--tab-content-height, calc(100vh - 19rem));
     padding: 2.4rem;
     overflow-y: auto;
     color: var(--text-general);
+
+    @media (max-width: 900px) {
+        height: auto;
+        min-height: var(--tab-content-height-mobile, 60vh);
+    }
 
     &__card {
         max-width: 72rem;
