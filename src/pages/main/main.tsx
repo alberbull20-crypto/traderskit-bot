@@ -80,17 +80,18 @@ const AppWrapper = observer(() => {
     const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
     const init_render = React.useRef(true);
+    // Same order as the tabs below and as DBOT_TABS / TAB_IDS in bot-contents.ts
     const hash = [
         'dashboard',
         'bot_builder',
-        'chart',
-        'tutorial',
-        'analysis_tool',
         'trading_bots',
         'bulk_trader',
         'pro_ai',
         'dual_edge',
+        'analysis_tool',
         'copy_trading',
+        'chart',
+        'tutorial',
     ];
     const { isDesktop } = useDevice();
     const location = useLocation();
@@ -390,6 +391,7 @@ const AppWrapper = observer(() => {
                     <div>
                         {!isDesktop && left_tab_shadow && <span className='tabs-shadow tabs-shadow--left' />}{' '}
                         <Tabs active_index={active_tab} className='main__tabs' onTabItemClick={handleTabChange} top>
+                            {/* 0: Dashboard */}
                             <div
                                 label={
                                     <>
@@ -405,6 +407,7 @@ const AppWrapper = observer(() => {
                             >
                                 <Dashboard handleTabChange={handleTabChange} />
                             </div>
+                            {/* 1: Bot Builder */}
                             <div
                                 label={
                                     <>
@@ -418,6 +421,110 @@ const AppWrapper = observer(() => {
                                 }
                                 id='id-bot-builder'
                             />
+                            {/* 2: Trading Bots */}
+                            <div
+                                label={
+                                    <>
+                                        <LabelPairedPuzzlePieceTwoCaptionBoldIcon
+                                            height='24px'
+                                            width='24px'
+                                            fill='var(--text-general)'
+                                        />
+                                        <Localize i18n_default_text='Trading Bots' />
+                                    </>
+                                }
+                                id='id-trading-bots'
+                            >
+                                <ComingSoon
+                                    title='Trading Bots'
+                                    text='A library of ready-to-load bots will appear here.'
+                                />
+                            </div>
+                            {/* 3: Bulk Trader */}
+                            <div
+                                label={
+                                    <>
+                                        <LabelPairedChartLineCaptionRegularIcon
+                                            height='24px'
+                                            width='24px'
+                                            fill='var(--text-general)'
+                                        />
+                                        <Localize i18n_default_text='Bulk Trader' />
+                                    </>
+                                }
+                                id='id-bulk-trader'
+                            >
+                                <ComingSoon title='Bulk Trader' text='Bulk trading tools will appear here.' />
+                            </div>
+                            {/* 4: Pro AI */}
+                            <div
+                                label={
+                                    <>
+                                        <LabelPairedPuzzlePieceTwoCaptionBoldIcon
+                                            height='24px'
+                                            width='24px'
+                                            fill='var(--text-general)'
+                                        />
+                                        <Localize i18n_default_text='Pro AI' />
+                                    </>
+                                }
+                                id='id-pro-ai'
+                            >
+                                <ComingSoon title='Pro AI' text='A strategy scanner will appear here.' />
+                            </div>
+                            {/* 5: Dual Edge */}
+                            <div
+                                label={
+                                    <>
+                                        <LabelPairedObjectsColumnCaptionRegularIcon
+                                            height='24px'
+                                            width='24px'
+                                            fill='var(--text-general)'
+                                        />
+                                        <Localize i18n_default_text='Dual Edge' />
+                                    </>
+                                }
+                                id='id-dual-edge'
+                            >
+                                <ComingSoon title='Dual Edge' text='Dual-strategy bot controls will appear here.' />
+                            </div>
+                            {/* 6: Analysis Tool */}
+                            <div
+                                label={
+                                    <>
+                                        <LabelPairedChartLineCaptionRegularIcon
+                                            height='24px'
+                                            width='24px'
+                                            fill='var(--text-general)'
+                                        />
+                                        <Localize i18n_default_text='Analysis Tool' />
+                                    </>
+                                }
+                                id='id-analysis-tool'
+                            >
+                                <Suspense
+                                    fallback={<ChunkLoader message={localize('Please wait, loading analysis tool...')} />}
+                                >
+                                    <AnalysisTool />
+                                </Suspense>
+                            </div>
+                            {/* 7: Copy Trading */}
+                            <div
+                                label={
+                                    <>
+                                        <LabelPairedObjectsColumnCaptionRegularIcon
+                                            height='24px'
+                                            width='24px'
+                                            fill='var(--text-general)'
+                                        />
+                                        <Localize i18n_default_text='Copy Trading' />
+                                    </>
+                                }
+                                id='id-copy-trading'
+                            >
+                                <ComingSoon title='Copy Trading' text='Copy trading tools will appear here.' />
+                            </div>
+                            {/* 8: Charts */}
                             <div
                                 label={
                                     <>
@@ -441,6 +548,7 @@ const AppWrapper = observer(() => {
                                     <ChartWrapper show_digits_stats={false} />
                                 </Suspense>
                             </div>
+                            {/* 9: Tutorials */}
                             <div
                                 label={
                                     <>
@@ -464,103 +572,6 @@ const AppWrapper = observer(() => {
                                         <Tutorial handleTabChange={handleTabChange} />
                                     </Suspense>
                                 </div>
-                            </div>
-                            <div
-                                label={
-                                    <>
-                                        <LabelPairedChartLineCaptionRegularIcon
-                                            height='24px'
-                                            width='24px'
-                                            fill='var(--text-general)'
-                                        />
-                                        <Localize i18n_default_text='Analysis Tool' />
-                                    </>
-                                }
-                                id='id-analysis-tool'
-                            >
-                                <Suspense
-                                    fallback={<ChunkLoader message={localize('Please wait, loading analysis tool...')} />}
-                                >
-                                    <AnalysisTool />
-                                </Suspense>
-                            </div>
-                            <div
-                                label={
-                                    <>
-                                        <LabelPairedPuzzlePieceTwoCaptionBoldIcon
-                                            height='24px'
-                                            width='24px'
-                                            fill='var(--text-general)'
-                                        />
-                                        <Localize i18n_default_text='Trading Bots' />
-                                    </>
-                                }
-                                id='id-trading-bots'
-                            >
-                                <ComingSoon
-                                    title='Trading Bots'
-                                    text='A library of ready-to-load bots will appear here.'
-                                />
-                            </div>
-                            <div
-                                label={
-                                    <>
-                                        <LabelPairedChartLineCaptionRegularIcon
-                                            height='24px'
-                                            width='24px'
-                                            fill='var(--text-general)'
-                                        />
-                                        <Localize i18n_default_text='Bulk Trader' />
-                                    </>
-                                }
-                                id='id-bulk-trader'
-                            >
-                                <ComingSoon title='Bulk Trader' text='Bulk trading tools will appear here.' />
-                            </div>
-                            <div
-                                label={
-                                    <>
-                                        <LabelPairedPuzzlePieceTwoCaptionBoldIcon
-                                            height='24px'
-                                            width='24px'
-                                            fill='var(--text-general)'
-                                        />
-                                        <Localize i18n_default_text='Pro AI' />
-                                    </>
-                                }
-                                id='id-pro-ai'
-                            >
-                                <ComingSoon title='Pro AI' text='A strategy scanner will appear here.' />
-                            </div>
-                            <div
-                                label={
-                                    <>
-                                        <LabelPairedObjectsColumnCaptionRegularIcon
-                                            height='24px'
-                                            width='24px'
-                                            fill='var(--text-general)'
-                                        />
-                                        <Localize i18n_default_text='Dual Edge' />
-                                    </>
-                                }
-                                id='id-dual-edge'
-                            >
-                                <ComingSoon title='Dual Edge' text='Dual-strategy bot controls will appear here.' />
-                            </div>
-                            <div
-                                label={
-                                    <>
-                                        <LabelPairedObjectsColumnCaptionRegularIcon
-                                            height='24px'
-                                            width='24px'
-                                            fill='var(--text-general)'
-                                        />
-                                        <Localize i18n_default_text='Copy Trading' />
-                                    </>
-                                }
-                                id='id-copy-trading'
-                            >
-                                <ComingSoon title='Copy Trading' text='Copy trading tools will appear here.' />
                             </div>
                         </Tabs>
                         {!isDesktop && right_tab_shadow && <span className='tabs-shadow tabs-shadow--right' />}{' '}
