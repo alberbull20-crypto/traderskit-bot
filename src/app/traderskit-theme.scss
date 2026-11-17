@@ -16,6 +16,8 @@ $text-body: #e2eaf7;
 $text-muted: #a8b6cc;
 $line: rgba(96, 165, 250, 0.18);
 $line-soft: rgba(96, 165, 250, 0.12);
+$scroll-thumb: #2b4270;
+$scroll-thumb-hover: #3b5a99;
 
 :root body.theme--dark {
     // Surfaces
@@ -97,13 +99,47 @@ $line-soft: rgba(96, 165, 250, 0.12);
             max-width: calc(100% - 55rem);
             overflow-x: auto;
             overflow-y: hidden;
+
+            // Firefox
             scrollbar-width: thin;
+            scrollbar-color: $scroll-thumb transparent;
         }
 
         .dc-tabs__item {
             flex-shrink: 0;
             padding: 0 1.4rem;
             white-space: nowrap;
+        }
+    }
+
+    // Chrome, Edge and Safari: a thin navy scrollbar with no arrow buttons
+    @supports selector(::-webkit-scrollbar) {
+        .main__container .dc-tabs__list {
+            scrollbar-width: auto;
+            scrollbar-color: auto;
+
+            &::-webkit-scrollbar {
+                height: 6px;
+            }
+
+            &::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: $scroll-thumb;
+                border-radius: 3px;
+
+                &:hover {
+                    background: $scroll-thumb-hover;
+                }
+            }
+
+            &::-webkit-scrollbar-button {
+                display: none;
+                width: 0;
+                height: 0;
+            }
         }
     }
 }
