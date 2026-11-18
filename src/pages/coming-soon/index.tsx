@@ -12,6 +12,7 @@ const WORKING_PAGES = {
     'Bulk Trader': lazy(() => import('../bulk-trader')),
     'Pro AI': lazy(() => import('../pro-ai')),
     'Dual Edge': lazy(() => import('../dual-edge')),
+    'Copy Trading': lazy(() => import('../copy-trading')),
 };
 
 const ComingSoon = ({ title, text }: TComingSoonProps) => {
