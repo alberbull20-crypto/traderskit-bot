@@ -8,6 +8,7 @@ type TComingSoonProps = {
 
 // Tabs that already have a working page. Add one line here for each new tab we finish.
 const WORKING_PAGES = {
+    'Trading Bots': lazy(() => import('../trading-bots')),
     'Bulk Trader': lazy(() => import('../bulk-trader')),
     'Pro AI': lazy(() => import('../pro-ai')),
     'Dual Edge': lazy(() => import('../dual-edge')),
