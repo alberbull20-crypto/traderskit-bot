@@ -2,8 +2,8 @@
 import { useEffect, useState } from 'react';
 import { api_base } from '@/external/bot-skeleton';
 import { useApiBase } from '@/hooks/useApiBase';
-import { isVirtualAccount } from '@/utils/account-helpers';
 import { getErrorText } from '@/utils/traderskit-trading';
+import { getTradingAccess } from '@/utils/trading-access';
 import '../analysis-tool/analysis-tool.scss';
 import '../bulk-trader/bulk-trader.scss';
 import '../pro-ai/pro-ai.scss';
@@ -22,7 +22,7 @@ const send = async request => {
 };
 
 const CopyTrading = () => {
-    const { activeLoginid } = useApiBase();
+    const { activeLoginid, authData } = useApiBase();
 
     const [token, setToken] = useState('');
     const [min_stake, setMinStake] = useState('');
@@ -35,8 +35,10 @@ const CopyTrading = () => {
     const [error, setError] = useState('');
     const [info, setInfo] = useState('');
 
-    const is_demo = Boolean(activeLoginid) && Boolean(isVirtualAccount(String(activeLoginid)));
-    const login_prefix = activeLoginid ? String(activeLoginid).slice(0, 3).toUpperCase() : '';
+    const currency = authData?.currency || 'USD';
+    // One shared rule for all trading tools (see src/utils/trading-access.ts)
+    const access = getTradingAccess(activeLoginid, currency);
+    const can_trade = access.allowed;
     const is_copying = copying || traders.length > 0;
 
     const refresh = async (quiet = false) => {
@@ -65,16 +67,16 @@ const CopyTrading = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const requireDemo = () => {
-        if (is_demo) return true;
-        setError('Copy trading runs on demo accounts only for now. Switch to your demo account to use it.');
+    const requireAccess = () => {
+        if (can_trade) return true;
+        setError(access.reason || 'Copy trading is not available for this account.');
         return false;
     };
 
     const startCopying = async () => {
         setError('');
         setInfo('');
-        if (!requireDemo()) return;
+        if (!requireAccess()) return;
 
         const trimmed = token.trim();
         if (trimmed.length < MIN_TOKEN_LENGTH) {
@@ -108,7 +110,7 @@ const CopyTrading = () => {
         try {
             await send(request);
             setCopying(true);
-            setInfo('Copying started. New trades from this trader will be copied into your demo account.');
+            setInfo('Copying started. New trades from this trader will be copied into your account.');
             await refresh(true);
         } catch (e) {
             setError(getErrorText(e));
@@ -119,11 +121,11 @@ const CopyTrading = () => {
     const stopCopying = async () => {
         setError('');
         setInfo('');
-        if (!requireDemo()) return;
+        if (!requireAccess()) return;
 
         const trimmed = token.trim();
         if (trimmed.length < MIN_TOKEN_LENGTH) {
-            setError("Paste the same read-only token you used to start, so Deriv knows which trader to stop copying.");
+            setError('Paste the same read-only token you used to start, so Deriv knows which trader to stop copying.');
             return;
         }
 
@@ -142,13 +144,13 @@ const CopyTrading = () => {
     const toggleAllow = async next => {
         setError('');
         setInfo('');
-        if (!requireDemo()) return;
+        if (!requireAccess()) return;
 
         setBusy(true);
         try {
             await send({ set_settings: 1, allow_copiers: next ? 1 : 0 });
             setAllowCopiers(next);
-            setInfo(next ? 'Others can now copy your demo account.' : 'Others can no longer copy this account.');
+            setInfo(next ? 'Others can now copy this account.' : 'Others can no longer copy this account.');
         } catch (e) {
             setError(getErrorText(e));
         }
@@ -162,13 +164,7 @@ const CopyTrading = () => {
 
     return (
         <div className='analysis-tool bulk-trader copy-trading'>
-            <div className={`bulk-trader__banner ${is_demo ? 'is-demo' : 'is-blocked'}`}>
-                {is_demo
-                    ? 'Demo account detected. Copy trading here uses virtual money.'
-                    : `Copy trading is switched off: it runs on demo accounts only for now. ${
-                          login_prefix ? `(Active account starts with ${login_prefix}.)` : '(No active account yet.)'
-                      }`}
-            </div>
+            {!can_trade && <div className='bulk-trader__banner is-blocked'>{access.reason}</div>}
 
             <div className='copy-trading__hero'>
                 <div>
@@ -176,7 +172,9 @@ const CopyTrading = () => {
                     <p>Copy another trader's trades into your account, using Deriv's own copy trading.</p>
                 </div>
                 <div className='copy-trading__chips'>
-                    <span className={is_demo ? 'is-on' : ''}>{is_demo ? 'Demo account' : 'Real account'}</span>
+                    <span className={access.is_demo ? 'is-on' : ''}>
+                        {!activeLoginid ? 'No account' : access.is_demo ? 'Demo account' : 'Real account'}
+                    </span>
                     <span className={is_copying ? 'is-on' : ''}>{is_copying ? 'Copying' : 'Not copying'}</span>
                 </div>
             </div>
@@ -238,7 +236,7 @@ const CopyTrading = () => {
                         <button
                             type='button'
                             className='bulk-trader__btn is-primary'
-                            disabled={busy || !is_demo}
+                            disabled={busy || !can_trade}
                             onClick={startCopying}
                         >
                             Start copying
@@ -246,7 +244,7 @@ const CopyTrading = () => {
                         <button
                             type='button'
                             className='bulk-trader__btn is-stop'
-                            disabled={busy || !is_demo}
+                            disabled={busy || !can_trade}
                             onClick={stopCopying}
                         >
                             Stop copying
@@ -274,7 +272,7 @@ const CopyTrading = () => {
                             <input
                                 type='checkbox'
                                 checked={Boolean(allow_copiers)}
-                                disabled={busy || !is_demo || allow_copiers === null}
+                                disabled={busy || !can_trade || allow_copiers === null}
                                 onChange={event => toggleAllow(event.target.checked)}
                             />
                             <span>Allow others to copy me</span>
@@ -321,7 +319,7 @@ const CopyTrading = () => {
 
             <p className='analysis-tool__note'>
                 Copy trading copies another trader's trades into your account, including their losses. Past results do not
-                predict future trades, and nothing here is financial advice. Trading involves risk.
+                predict future trades, and nothing here is financial advice. Trading involves risk and you can lose money.
             </p>
         </div>
     );
