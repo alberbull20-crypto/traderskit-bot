@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { api_base } from '@/external/bot-skeleton';
 import { useApiBase } from '@/hooks/useApiBase';
-import { isVirtualAccount } from '@/utils/account-helpers';
+import { getTradingAccess } from '@/utils/trading-access';
 import '../analysis-tool/analysis-tool.scss';
 import './bulk-trader.scss';
 
@@ -164,10 +164,10 @@ const BulkTrader = () => {
 
     const rootRef = useRef(null);
 
-    // Same check the header uses to show "Demo account"
-    const login_prefix = activeLoginid ? String(activeLoginid).slice(0, 3).toUpperCase() : '';
-    const is_demo = Boolean(activeLoginid) && Boolean(isVirtualAccount(String(activeLoginid)));
     const currency = authData?.currency || 'USD';
+    // One shared rule for all trading tools (see src/utils/trading-access.ts)
+    const access = getTradingAccess(activeLoginid, currency);
+    const can_trade = access.allowed;
     const type_config = TRADE_TYPES[trade_type];
 
     // Load the window of ticks, then refresh it every couple of seconds.
@@ -289,8 +289,8 @@ const BulkTrader = () => {
     const placeTrades = async side => {
         setMessage('');
 
-        if (!is_demo) {
-            setMessage('Trading tools run on demo accounts only for now. Switch to your demo account to use them.');
+        if (!can_trade) {
+            setMessage(access.reason || 'Trading is not available for this account.');
             return;
         }
 
@@ -374,13 +374,7 @@ const BulkTrader = () => {
                 <p>Place several digit trades at once and watch the last-digit pattern live.</p>
             </div>
 
-            <div className={`bulk-trader__banner ${is_demo ? 'is-demo' : 'is-blocked'}`}>
-                {is_demo
-                    ? 'Demo account detected. Trades here use virtual money.'
-                    : `Trading is switched off: Bulk Trader runs on demo accounts only for now. ${
-                          login_prefix ? `(Active account starts with ${login_prefix}.)` : '(No active account yet.)'
-                      }`}
-            </div>
+            {!can_trade && <div className='bulk-trader__banner is-blocked'>{access.reason}</div>}
 
             <div className='analysis-tool__controls'>
                 <label className='analysis-tool__field'>
@@ -543,7 +537,7 @@ const BulkTrader = () => {
                             type='button'
                             key={side.contract}
                             className={`bulk-trader__btn ${index === 0 ? 'is-primary' : 'is-alt'}`}
-                            disabled={is_busy || !is_demo}
+                            disabled={is_busy || !can_trade}
                             onClick={() => placeTrades(side)}
                         >
                             Buy {parseInt(trade_count, 10) || 0} × {side.label}
@@ -608,8 +602,8 @@ const BulkTrader = () => {
             )}
 
             <p className='analysis-tool__note'>
-                Trading involves risk. Past digit frequency does not predict the next tick, and nothing here is
-                financial advice.
+                Trading involves risk and you can lose money. Past digit frequency does not predict the next tick, and
+                nothing here is financial advice.
             </p>
         </div>
     );
