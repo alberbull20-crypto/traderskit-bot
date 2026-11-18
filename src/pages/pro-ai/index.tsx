@@ -2,7 +2,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { api_base } from '@/external/bot-skeleton';
 import { useApiBase } from '@/hooks/useApiBase';
-import { isVirtualAccount } from '@/utils/account-helpers';
 import {
     buyDigitContract,
     digitFromQuote,
@@ -10,6 +9,7 @@ import {
     getErrorCode,
     getErrorText,
 } from '@/utils/traderskit-trading';
+import { getTradingAccess } from '@/utils/trading-access';
 import '../analysis-tool/analysis-tool.scss';
 import '../bulk-trader/bulk-trader.scss';
 import './pro-ai.scss';
@@ -105,9 +105,10 @@ const ProAI = () => {
     const engine = useRef(createEngine());
     const mounted = useRef(true);
 
-    const login_prefix = activeLoginid ? String(activeLoginid).slice(0, 3).toUpperCase() : '';
-    const is_demo = Boolean(activeLoginid) && Boolean(isVirtualAccount(String(activeLoginid)));
     const currency = authData?.currency || 'USD';
+    // One shared rule for all trading tools (see src/utils/trading-access.ts)
+    const access = getTradingAccess(activeLoginid, currency);
+    const can_trade = access.allowed;
     const base_strategy = STRATEGIES.find(item => item.id === strategy_id) || STRATEGIES[0];
 
     const safe = fn => {
@@ -363,8 +364,8 @@ const ProAI = () => {
     const startScanner = async () => {
         setMessage('');
 
-        if (!is_demo) {
-            setMessage('Pro AI runs on demo accounts only for now. Switch to your demo account to use it.');
+        if (!can_trade) {
+            setMessage(access.reason || 'Trading is not available for this account.');
             return;
         }
         if (!api_base?.api) {
@@ -485,15 +486,8 @@ const ProAI = () => {
         setView('detail');
     };
 
-    const banner = (
-        <div className={`bulk-trader__banner ${is_demo ? 'is-demo' : 'is-blocked'}`}>
-            {is_demo
-                ? 'Demo account detected. Trades here use virtual money.'
-                : `Trading is switched off: Pro AI runs on demo accounts only for now. ${
-                      login_prefix ? `(Active account starts with ${login_prefix}.)` : '(No active account yet.)'
-                  }`}
-        </div>
-    );
+    // The notice box only appears when trading is blocked for this account.
+    const banner = !can_trade ? <div className='bulk-trader__banner is-blocked'>{access.reason}</div> : null;
 
     // ---------- Strategy list ----------
     if (view === 'list') {
@@ -523,7 +517,8 @@ const ProAI = () => {
 
                 <p className='analysis-tool__note'>
                     The scanner follows fixed rules. Patterns only decide when a trade is placed: they do not change the
-                    odds of winning, and past digits do not predict the next one. Trading involves risk.
+                    odds of winning, and past digits do not predict the next one. Trading involves risk and you can lose
+                    money.
                 </p>
             </div>
         );
@@ -624,7 +619,7 @@ const ProAI = () => {
                         <button
                             type='button'
                             className='bulk-trader__btn is-primary pro-ai__start'
-                            disabled={!is_demo}
+                            disabled={!can_trade}
                             onClick={startScanner}
                         >
                             Start scanner
@@ -766,7 +761,7 @@ const ProAI = () => {
 
             <p className='analysis-tool__note'>
                 The scanner follows fixed rules. Patterns only decide when a trade is placed: they do not change the odds
-                of winning, and past digits do not predict the next one. Trading involves risk.
+                of winning, and past digits do not predict the next one. Trading involves risk and you can lose money.
             </p>
         </div>
     );
