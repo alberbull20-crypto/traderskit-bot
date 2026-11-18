@@ -12,9 +12,19 @@ $amber: #f59e0b;
     z-index: 1;
     background: var(--general-main-1);
 
-    // The demo-only notice box is hidden on request. Trading is still limited to demo accounts in the code.
+    // Shown only when trading is blocked for the active account (for example a crypto account).
     &__banner {
-        display: none;
+        margin-bottom: 2rem;
+        padding: 1.2rem 1.6rem;
+        border-radius: 1rem;
+        font-size: 1.4rem;
+        line-height: 1.5;
+
+        &.is-blocked {
+            border: 1px solid rgba(245, 158, 11, 0.5);
+            background: rgba(245, 158, 11, 0.1);
+            color: #fcd34d;
+        }
     }
 
     &__panel {
