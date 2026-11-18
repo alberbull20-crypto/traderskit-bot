@@ -2,7 +2,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { api_base } from '@/external/bot-skeleton';
 import { useApiBase } from '@/hooks/useApiBase';
-import { isVirtualAccount } from '@/utils/account-helpers';
 import {
     buyDigitContract,
     digitFromQuote,
@@ -10,6 +9,7 @@ import {
     getErrorCode,
     getErrorText,
 } from '@/utils/traderskit-trading';
+import { getTradingAccess } from '@/utils/trading-access';
 import '../analysis-tool/analysis-tool.scss';
 import '../bulk-trader/bulk-trader.scss';
 import '../pro-ai/pro-ai.scss';
@@ -101,9 +101,10 @@ const DualEdge = () => {
     const engine = useRef(createEngine());
     const mounted = useRef(true);
 
-    const login_prefix = activeLoginid ? String(activeLoginid).slice(0, 3).toUpperCase() : '';
-    const is_demo = Boolean(activeLoginid) && Boolean(isVirtualAccount(String(activeLoginid)));
     const currency = authData?.currency || 'USD';
+    // One shared rule for all trading tools (see src/utils/trading-access.ts)
+    const access = getTradingAccess(activeLoginid, currency);
+    const can_trade = access.allowed;
     const initial_type = INITIAL_TYPES.find(item => item.id === initial_id) || INITIAL_TYPES[0];
     const api_connected = Boolean(api_base?.api);
 
@@ -442,8 +443,8 @@ const DualEdge = () => {
     const startSession = async () => {
         setMessage('');
 
-        if (!is_demo) {
-            setMessage('Dual Edge runs on demo accounts only for now. Switch to your demo account to use it.');
+        if (!can_trade) {
+            setMessage(access.reason || 'Trading is not available for this account.');
             return;
         }
         if (!api_base?.api) {
@@ -560,13 +561,7 @@ const DualEdge = () => {
 
     return (
         <div className='analysis-tool bulk-trader dual-edge'>
-            <div className={`bulk-trader__banner ${is_demo ? 'is-demo' : 'is-blocked'}`}>
-                {is_demo
-                    ? 'Demo account detected. Trades here use virtual money.'
-                    : `Trading is switched off: Dual Edge runs on demo accounts only for now. ${
-                          login_prefix ? `(Active account starts with ${login_prefix}.)` : '(No active account yet.)'
-                      }`}
-            </div>
+            {!can_trade && <div className='bulk-trader__banner is-blocked'>{access.reason}</div>}
 
             <div className='dual-edge__hero'>
                 <div>
@@ -755,7 +750,7 @@ const DualEdge = () => {
                         <button
                             type='button'
                             className='bulk-trader__btn is-primary pro-ai__start'
-                            disabled={!is_demo}
+                            disabled={!can_trade}
                             onClick={startSession}
                         >
                             Start Dual Edge
@@ -829,7 +824,8 @@ const DualEdge = () => {
             <p className='analysis-tool__note'>
                 Raising the stake after a loss (martingale) does not improve the odds: a long losing streak can grow
                 stakes quickly, which is why the stop loss, recovery step limit and stake cap above matter. Patterns only
-                decide when a trade is placed. Trading involves risk. Stop this bot before running one from Bot Builder.
+                decide when a trade is placed. Trading involves risk and you can lose money. Stop this bot before running
+                one from Bot Builder.
             </p>
         </div>
     );
