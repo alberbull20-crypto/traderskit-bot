@@ -12,24 +12,9 @@ $amber: #f59e0b;
     z-index: 1;
     background: var(--general-main-1);
 
+    // The demo-only notice box is hidden on request. Trading is still limited to demo accounts in the code.
     &__banner {
-        margin-bottom: 2rem;
-        padding: 1.2rem 1.6rem;
-        border-radius: 1rem;
-        font-size: 1.4rem;
-        line-height: 1.5;
-
-        &.is-demo {
-            border: 1px solid rgba(34, 197, 94, 0.45);
-            background: rgba(34, 197, 94, 0.1);
-            color: #86efac;
-        }
-
-        &.is-blocked {
-            border: 1px solid rgba(245, 158, 11, 0.5);
-            background: rgba(245, 158, 11, 0.1);
-            color: #fcd34d;
-        }
+        display: none;
     }
 
     &__panel {
