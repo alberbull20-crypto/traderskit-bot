@@ -12,18 +12,26 @@ export const getErrorCode = error => (error?.error ?? error)?.code;
 export const digitFromQuote = (quote, pip) => Number(Number(quote).toFixed(pip).slice(-1));
 
 /**
- * Buys one digit contract directly (no proposal step), for 1 tick.
+ * Buys one contract directly (no proposal step).
  * Tries the field name used by the template's trade options first (underlying_symbol),
  * and retries once with the older name (symbol) if Deriv rejects the request format.
  */
-export const buyDigitContract = async ({ contract_type, stake, currency, symbol, barrier }) => {
+export const buyContract = async ({
+    contract_type,
+    stake,
+    currency,
+    symbol,
+    barrier,
+    duration = 1,
+    duration_unit = 't',
+}) => {
     const parameters = {
         amount: stake,
         basis: 'stake',
         contract_type,
         currency,
-        duration: 1,
-        duration_unit: 't',
+        duration,
+        duration_unit,
     };
     if (barrier !== undefined) parameters.barrier = String(barrier);
 
@@ -35,6 +43,51 @@ export const buyDigitContract = async ({ contract_type, stake, currency, symbol,
         });
         if (response?.error) throw response;
         return response;
+    };
+
+    try {
+        return await send('underlying_symbol');
+    } catch (error) {
+        if (getErrorCode(error) === 'InputValidationFailed') {
+            return await send('symbol');
+        }
+        throw error;
+    }
+};
+
+/** Buys one digit contract for 1 tick. */
+export const buyDigitContract = args => buyContract({ ...args, duration: 1, duration_unit: 't' });
+
+/**
+ * Asks Deriv for the price of a contract without buying it (a one-off request, no subscription).
+ * Returns the proposal object, which includes ask_price and payout.
+ */
+export const getProposal = async ({
+    contract_type,
+    stake,
+    currency,
+    symbol,
+    barrier,
+    duration = 1,
+    duration_unit = 't',
+}) => {
+    if (!api_base?.api) throw new Error('Waiting for the Deriv connection...');
+
+    const request = {
+        proposal: 1,
+        amount: stake,
+        basis: 'stake',
+        contract_type,
+        currency,
+        duration,
+        duration_unit,
+    };
+    if (barrier !== undefined) request.barrier = String(barrier);
+
+    const send = async symbol_key => {
+        const response = await api_base.api.send({ ...request, [symbol_key]: symbol });
+        if (response?.error) throw response;
+        return response?.proposal;
     };
 
     try {
