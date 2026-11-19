@@ -10,6 +10,7 @@ type TComingSoonProps = {
 const WORKING_PAGES = {
     'Trading Bots': lazy(() => import('../trading-bots')),
     'Bulk Trader': lazy(() => import('../bulk-trader')),
+    'Manual Trader': lazy(() => import('../manual-trader')),
     'Pro AI': lazy(() => import('../pro-ai')),
     'Dual Edge': lazy(() => import('../dual-edge')),
     'Copy Trading': lazy(() => import('../copy-trading')),
