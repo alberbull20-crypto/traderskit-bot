@@ -86,11 +86,14 @@ const AppWrapper = observer(() => {
         'bot_builder',
         'trading_bots',
         'bulk_trader',
+        'manual_trader',
         'pro_ai',
         'dual_edge',
         'analysis_tool',
+        'risk_calculator',
         'copy_trading',
         'chart',
+        'trading_view',
         'tutorial',
     ];
     const { isDesktop } = useDevice();
@@ -456,7 +459,23 @@ const AppWrapper = observer(() => {
                             >
                                 <ComingSoon title='Bulk Trader' text='Bulk trading tools will appear here.' />
                             </div>
-                            {/* 4: Pro AI */}
+                            {/* 4: Manual Trader */}
+                            <div
+                                label={
+                                    <>
+                                        <LabelPairedObjectsColumnCaptionRegularIcon
+                                            height='24px'
+                                            width='24px'
+                                            fill='var(--text-general)'
+                                        />
+                                        <Localize i18n_default_text='Manual Trader' />
+                                    </>
+                                }
+                                id='id-manual-trader'
+                            >
+                                <ComingSoon title='Manual Trader' text='A hand-trading panel will appear here.' />
+                            </div>
+                            {/* 5: Pro AI */}
                             <div
                                 label={
                                     <>
@@ -472,7 +491,7 @@ const AppWrapper = observer(() => {
                             >
                                 <ComingSoon title='Pro AI' text='A strategy scanner will appear here.' />
                             </div>
-                            {/* 5: Dual Edge */}
+                            {/* 6: Dual Edge */}
                             <div
                                 label={
                                     <>
@@ -488,7 +507,7 @@ const AppWrapper = observer(() => {
                             >
                                 <ComingSoon title='Dual Edge' text='Dual-strategy bot controls will appear here.' />
                             </div>
-                            {/* 6: Analysis Tool */}
+                            {/* 7: Analysis Tool */}
                             <div
                                 label={
                                     <>
@@ -508,7 +527,26 @@ const AppWrapper = observer(() => {
                                     <AnalysisTool />
                                 </Suspense>
                             </div>
-                            {/* 7: Copy Trading */}
+                            {/* 8: Risk Calculator */}
+                            <div
+                                label={
+                                    <>
+                                        <LabelPairedPuzzlePieceTwoCaptionBoldIcon
+                                            height='24px'
+                                            width='24px'
+                                            fill='var(--text-general)'
+                                        />
+                                        <Localize i18n_default_text='Risk Calculator' />
+                                    </>
+                                }
+                                id='id-risk-calculator'
+                            >
+                                <ComingSoon
+                                    title='Risk Calculator'
+                                    text='A stake and risk calculator will appear here.'
+                                />
+                            </div>
+                            {/* 9: Copy Trading */}
                             <div
                                 label={
                                     <>
@@ -524,7 +562,7 @@ const AppWrapper = observer(() => {
                             >
                                 <ComingSoon title='Copy Trading' text='Copy trading tools will appear here.' />
                             </div>
-                            {/* 8: Charts */}
+                            {/* 10: Charts */}
                             <div
                                 label={
                                     <>
@@ -548,7 +586,23 @@ const AppWrapper = observer(() => {
                                     <ChartWrapper show_digits_stats={false} />
                                 </Suspense>
                             </div>
-                            {/* 9: Tutorials */}
+                            {/* 11: TradingView */}
+                            <div
+                                label={
+                                    <>
+                                        <LabelPairedChartLineCaptionRegularIcon
+                                            height='24px'
+                                            width='24px'
+                                            fill='var(--text-general)'
+                                        />
+                                        <Localize i18n_default_text='TradingView' />
+                                    </>
+                                }
+                                id='id-trading-view'
+                            >
+                                <ComingSoon title='TradingView' text='The TradingView chart will appear here.' />
+                            </div>
+                            {/* 12: Tutorials */}
                             <div
                                 label={
                                     <>
