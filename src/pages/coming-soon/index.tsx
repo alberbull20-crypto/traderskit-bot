@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import './coming-soon.scss';
 
+
 type TComingSoonProps = {
     title: string;
     text: string;
