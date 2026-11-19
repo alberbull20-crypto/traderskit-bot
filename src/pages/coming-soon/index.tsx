@@ -13,6 +13,7 @@ const WORKING_PAGES = {
     'Pro AI': lazy(() => import('../pro-ai')),
     'Dual Edge': lazy(() => import('../dual-edge')),
     'Copy Trading': lazy(() => import('../copy-trading')),
+    'Risk Calculator': lazy(() => import('../risk-calculator')),
 };
 
 const ComingSoon = ({ title, text }: TComingSoonProps) => {
