@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react';
 import './coming-soon.scss';
 
-
 type TComingSoonProps = {
     title: string;
     text: string;
@@ -16,6 +15,7 @@ const WORKING_PAGES = {
     'Dual Edge': lazy(() => import('../dual-edge')),
     'Copy Trading': lazy(() => import('../copy-trading')),
     'Risk Calculator': lazy(() => import('../risk-calculator')),
+    TradingView: lazy(() => import('../trading-view')),
 };
 
 const ComingSoon = ({ title, text }: TComingSoonProps) => {
