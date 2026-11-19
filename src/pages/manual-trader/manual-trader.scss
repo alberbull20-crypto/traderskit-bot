@@ -1,0 +1,61 @@
+$cyan: #22d3ee;
+$red: #ef4444;
+
+.manual-trader {
+    // Solid background above the Bot Builder workspace, which the template keeps running behind the tabs
+    position: relative;
+    z-index: 1;
+    background: var(--general-main-1);
+
+    &__previews {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.2rem;
+        margin-bottom: 1.6rem;
+
+        @media (max-width: 600px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &__preview {
+        padding: 1.4rem 1.8rem;
+        border: 1px solid var(--border-normal);
+        border-radius: 1.2rem;
+        background: var(--general-main-2);
+
+        h4 {
+            margin: 0 0 0.8rem;
+            font-size: 1.8rem;
+            color: var(--text-prominent);
+        }
+
+        p {
+            margin: 0 0 0.4rem;
+            font-size: 1.4rem;
+            color: var(--text-general);
+
+            strong {
+                color: $cyan;
+            }
+
+            &.is-muted {
+                font-size: 1.2rem;
+                color: var(--text-less-prominent);
+            }
+
+            &.is-error {
+                color: $red;
+            }
+        }
+    }
+
+    &__buttons {
+        margin-left: 0;
+        width: 100%;
+
+        button {
+            flex: 1;
+        }
+    }
+}
