@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { useLocation, useNavigate } from 'react-router';
 import ChunkLoader from '@/components/loader/chunk-loader';
+import MarketBar from '@/components/market-bar';
 import { generateOAuthURL } from '@/components/shared';
 import DesktopWrapper from '@/components/shared_ui/desktop-wrapper';
 import Dialog from '@/components/shared_ui/dialog';
@@ -386,6 +387,7 @@ const AppWrapper = observer(() => {
     return (
         <React.Fragment>
             <div className='main'>
+                <MarketBar />
                 <div
                     className={classNames('main__container', {
                         'main__container--active': active_tour && active_tab === DASHBOARD && !isDesktop,
