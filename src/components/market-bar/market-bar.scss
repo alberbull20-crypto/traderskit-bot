@@ -193,16 +193,6 @@ $red: #ef4444;
     }
 }
 
-@keyframes market-bar-scroll {
-    from {
-        transform: translateX(0);
-    }
-
-    to {
-        transform: translateX(-50%);
-    }
-}
-
 // Phones and tablets: the template locks the main area to a fixed height and hides anything that does not
 // fit. Let the main area scroll, and let the tab content grow to its natural height inside it.
 @media (max-width: 1024px) {
@@ -229,5 +219,15 @@ $red: #ef4444;
         height: auto;
         min-height: 30rem;
         overflow: visible;
+    }
+}
+
+@keyframes market-bar-scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
     }
 }
