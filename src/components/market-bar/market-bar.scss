@@ -186,39 +186,10 @@ $red: #ef4444;
 }
 
 // Phones and tablets: the template sizes its panels for the tabs sitting directly under the header,
-// so the bar is hidden there until it has a better home.
+// so the bar is hidden there. Nothing else is changed on small screens.
 @media (max-width: 1024px) {
     .main > .market-bar {
         display: none;
-    }
-}
-
-// Phones and tablets: the template locks the main area to a fixed height and hides anything that does not
-// fit. Let the main area scroll, and let the tab content grow to its natural height inside it.
-@media (max-width: 1024px) {
-    .main {
-        height: calc(100dvh - 6rem);
-        overflow-x: hidden;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        overscroll-behavior-y: contain;
-    }
-
-    .main > .main__container {
-        flex: 0 0 auto;
-        height: auto;
-        min-height: 100%;
-    }
-
-    .main .main__container .dc-tabs__content {
-        height: auto;
-        min-height: 40rem;
-    }
-
-    .tab__dashboard__content {
-        height: auto;
-        min-height: 30rem;
-        overflow: visible;
     }
 }
 
