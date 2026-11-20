@@ -1,116 +1,112 @@
-// TradersKit workspace theme: a bright light interface (navy tab bar, mint surfaces, teal accents)
-// and a dark navy interface, both with blue accents.
-// Each theme only applies to its own body class, so the landing page is untouched.
-// The selectors start with :root so they outrank the template's own `:root .theme--*` rules.
+// TradersKit workspace theme — matching Traderskit.site branding
+// Deep black + strong Deriv red accents (based on the promotional design)
 
-$navy-950: #040a17;
-$navy-900: #071225;
-$navy-800: #0b1a33;
-$navy-750: #0e1f3d;
-$navy-700: #12254a;
-$navy-600: #183166;
-$blue-600: #1d4ed8;
-$blue-500: #2563eb;
-$blue-400: #3b82f6;
-$cyan-400: #22d3ee;
-$cyan-500: #06b6d4;
-$indigo-500: #4f46e5;
+$black-950: #050505;
+$black-900: #0a0a0a;
+$black-800: #111111;
+$black-750: #161616;
+$black-700: #1c1c1c;
+$black-600: #252525;
+
+$red-600: #e11d2e;          // primary Deriv-style red
+$red-500: #ff2d3f;
+$red-400: #ff4d5e;
+$red-glow: rgba(225, 29, 46, 0.45);
+
+$green-up: #22c55e;
+$red-down: #ef4444;
+
 $text-main: #ffffff;
-$text-body: #e2eaf7;
-$text-muted: #a8b6cc;
-$line: rgba(96, 165, 250, 0.18);
-$line-soft: rgba(96, 165, 250, 0.12);
-$scroll-thumb: #2b4270;
-$scroll-thumb-hover: #3b5a99;
-$button-gradient: linear-gradient(135deg, $blue-500 0%, $indigo-500 100%);
+$text-body: #e5e5e5;
+$text-muted: #a3a3a3;
 
-// Light theme colours
-$ink-900: #0b1f33;
-$ink-700: #1f3347;
-$ink-500: #5a6f80;
-$mint-25: #f5fbfa;
-$mint-50: #f3fbf9;
-$mint-100: #e6f6f3;
-$mint-150: #dff3ef;
-$mint-200: #cdebe6;
-$teal-500: #14b8a6;
-$teal-600: #0d9488;
-$bar-navy: #0b3b73;
-$bar-navy-end: #0a4a8c;
-$bar-active: #1a63c4;
-$line-light: rgba(13, 148, 136, 0.2);
-$line-light-soft: rgba(13, 148, 136, 0.12);
+$line: rgba(255, 45, 63, 0.22);
+$line-soft: rgba(255, 45, 63, 0.12);
+
+$scroll-thumb: #3f3f3f;
+$scroll-thumb-hover: #5a5a5a;
+
+$button-gradient: linear-gradient(135deg, $red-600 0%, #c41e2a 100%);
+$button-gradient-hover: linear-gradient(135deg, $red-500 0%, $red-600 100%);
+
+// Light theme colours (kept clean but with red accents)
+$ink-900: #111111;
+$ink-700: #333333;
+$ink-500: #666666;
+$surface-light: #f8f8f8;
+$surface-soft: #f1f1f1;
+$line-light: rgba(225, 29, 46, 0.18);
+$line-light-soft: rgba(225, 29, 46, 0.10);
 
 // ---------------------------------------------------------------------------
-// LIGHT THEME: clean, bright and professional
+// LIGHT THEME
 // ---------------------------------------------------------------------------
 :root body.theme--light {
     // Surfaces
     --general-main-1: #ffffff;
-    --general-main-2: #{$mint-50};
-    --general-main-3: #{$mint-100};
-    --du-general-main-2: #{$mint-50};
-    --general-section-1: #{$mint-25};
+    --general-main-2: #{$surface-light};
+    --general-main-3: #{$surface-soft};
+    --du-general-main-2: #{$surface-light};
+    --general-section-1: #fafafa;
     --general-section-2: #ffffff;
-    --general-section-3: #{$mint-100};
-    --general-section-4: #{$mint-100};
-    --general-section-5: #{$mint-100};
-    --general-disabled: #e3eeec;
-    --general-hover: #{$mint-150};
-    --general-active: #{$mint-200};
+    --general-section-3: #{$surface-soft};
+    --general-section-4: #{$surface-soft};
+    --general-section-5: #{$surface-soft};
+    --general-disabled: #e5e5e5;
+    --general-hover: #f0f0f0;
+    --general-active: #e8e8e8;
 
     // States and fills
     --state-normal: #ffffff;
-    --state-hover: #{$mint-150};
-    --state-active: #{$mint-200};
-    --state-disabled: #e3eeec;
+    --state-hover: #f0f0f0;
+    --state-active: #e8e8e8;
+    --state-disabled: #e5e5e5;
     --fill-normal: #ffffff;
-    --fill-normal-1: #{$mint-100};
+    --fill-normal-1: #{$surface-soft};
 
     // Text
     --text-prominent: #{$ink-900};
     --text-general: #{$ink-700};
     --text-less-prominent: #{$ink-500};
 
-    // Buttons: blue instead of the template's red hover and pressed states
-    --button-primary-default: #{$blue-500};
-    --button-primary-hover: #{$blue-600};
-    --button-primary-light-default: rgba(37, 99, 235, 0.1);
-    --button-primary-light-hover: rgba(37, 99, 235, 0.18);
-    --button-tertiary-hover: rgba(13, 148, 136, 0.1);
+    // Buttons — strong red
+    --button-primary-default: #{$red-600};
+    --button-primary-hover: #{$red-500};
+    --button-primary-light-default: rgba(225, 29, 46, 0.10);
+    --button-primary-light-hover: rgba(225, 29, 46, 0.18);
+    --button-tertiary-hover: rgba(225, 29, 46, 0.08);
 
     // Lines
     --border-normal: #{$line-light};
     --border-divider: #{$line-light-soft};
     --border-disabled: #{$line-light-soft};
 
-    // Page background: clean white with a faint mint glow at the top
+    // Soft red glow at the top
     background:
-        radial-gradient(ellipse 70% 30% at 50% -6%, rgba(20, 184, 166, 0.1), transparent 70%),
+        radial-gradient(ellipse 70% 30% at 50% -6%, rgba(225, 29, 46, 0.08), transparent 70%),
         #ffffff;
     background-attachment: fixed;
 
-    // Let the page background show through
     .bot-dashboard,
     .main {
         background: transparent;
     }
 
-    // Header: pale mint
+    // Header
     .app-header {
-        background: linear-gradient(180deg, #f4fcfa, #e9f7f4) !important;
+        background: linear-gradient(180deg, #ffffff, #f7f7f7) !important;
         border-bottom: 1px solid $line-light;
-        box-shadow: 0 4px 18px rgba(13, 148, 136, 0.08);
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
     }
 
-    // Banner strip above the tabs (the live-price ticker): blue to teal, white text
+    // Market bar — black to red gradient
     .market-bar {
         gap: 0.4rem 1.6rem;
         margin-bottom: 0;
         padding: 0.7rem 1.4rem;
         border: 0;
         border-radius: 0;
-        background: linear-gradient(90deg, $bar-navy, $teal-600);
+        background: linear-gradient(90deg, #111111, $red-600);
         box-shadow: none;
 
         .market-bar__item {
@@ -149,27 +145,25 @@ $line-light-soft: rgba(13, 148, 136, 0.12);
 
                 &.is-active {
                     background: #ffffff;
-                    color: $bar-navy;
+                    color: #111111;
                 }
             }
         }
     }
 
-    // Nav bar: a solid navy bar with white labels and icons
+    // Nav bar
     .main__container {
         .dc-tabs__list {
-            background: linear-gradient(90deg, $bar-navy, $bar-navy-end);
+            background: linear-gradient(90deg, #111111, #1a1a1a);
             border: 0;
             border-radius: 0;
-            box-shadow: 0 8px 22px rgba(11, 59, 115, 0.22);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
         }
 
         .dc-tabs__item {
             font-weight: 700;
             letter-spacing: 0.01em;
-            transition:
-                background 0.2s ease,
-                color 0.2s ease;
+            transition: background 0.2s ease, color 0.2s ease;
 
             &,
             * {
@@ -182,134 +176,127 @@ $line-light-soft: rgba(13, 148, 136, 0.12);
             }
 
             &:hover {
-                background: rgba(255, 255, 255, 0.12);
+                background: rgba(255, 255, 255, 0.1);
             }
         }
 
         .dc-tabs__active {
-            background: $bar-active;
-            box-shadow: inset 0 -3px 0 #67e8f9;
+            background: $red-600;
+            box-shadow: inset 0 -3px 0 #ff8a95;
         }
 
-        // Hide the thin line the template draws under the active tab
         .dc-tabs__active-line {
             background-color: transparent;
         }
     }
 
-    // Run panel: teal, like the reference
+    // Run button
     .main__run-strategy-wrapper {
         .animation__button#db-animation__run-button {
-            background: linear-gradient(135deg, $teal-600, $teal-500);
-            box-shadow: 0 6px 18px rgba(13, 148, 136, 0.3);
+            background: $button-gradient;
+            box-shadow: 0 6px 18px $red-glow;
         }
 
         .animation__container {
             border: 1px solid $line-light;
             border-radius: 1rem;
             overflow: hidden;
-            box-shadow: 0 10px 28px rgba(13, 148, 136, 0.14);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
         }
     }
 
-    // Light scrollbar thumb on the navy tab bar
     .main__container .dc-tabs__list {
-        scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+        scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
     }
 }
 
 // ---------------------------------------------------------------------------
-// DARK THEME: deep navy with blue accents (unchanged)
+// DARK THEME — matches the promotional image (black + red)
 // ---------------------------------------------------------------------------
 :root body.theme--dark {
     // Surfaces
-    --general-main-1: #{$navy-900};
-    --general-main-2: #{$navy-800};
-    --general-main-3: #{$navy-750};
-    --du-general-main-2: #{$navy-800};
-    --general-section-1: #{$navy-950};
-    --general-section-2: #{$navy-900};
-    --general-section-3: #{$navy-750};
-    --general-section-4: #{$navy-750};
-    --general-section-5: #{$navy-750};
-    --general-disabled: #{$navy-750};
-    --general-hover: #{$navy-700};
-    --general-active: #{$navy-600};
+    --general-main-1: #{$black-900};
+    --general-main-2: #{$black-800};
+    --general-main-3: #{$black-750};
+    --du-general-main-2: #{$black-800};
+    --general-section-1: #{$black-950};
+    --general-section-2: #{$black-900};
+    --general-section-3: #{$black-750};
+    --general-section-4: #{$black-750};
+    --general-section-5: #{$black-750};
+    --general-disabled: #{$black-750};
+    --general-hover: #{$black-700};
+    --general-active: #{$black-600};
 
     // States and fills
-    --state-normal: #{$navy-900};
-    --state-hover: #{$navy-700};
-    --state-active: #{$navy-600};
-    --state-disabled: #{$navy-750};
-    --fill-normal: #{$navy-900};
-    --fill-normal-1: #{$navy-750};
+    --state-normal: #{$black-900};
+    --state-hover: #{$black-700};
+    --state-active: #{$black-600};
+    --state-disabled: #{$black-750};
+    --fill-normal: #{$black-900};
+    --fill-normal-1: #{$black-750};
 
     // Text
     --text-prominent: #{$text-main};
     --text-general: #{$text-body};
     --text-less-prominent: #{$text-muted};
 
-    // Buttons: blue instead of the template's red hover and pressed states
-    --button-primary-default: #{$blue-500};
-    --button-primary-hover: #{$blue-600};
-    --button-primary-light-default: rgba(37, 99, 235, 0.16);
-    --button-primary-light-hover: rgba(37, 99, 235, 0.28);
-    --button-tertiary-hover: rgba(37, 99, 235, 0.14);
+    // Buttons — strong red
+    --button-primary-default: #{$red-600};
+    --button-primary-hover: #{$red-500};
+    --button-primary-light-default: rgba(225, 29, 46, 0.16);
+    --button-primary-light-hover: rgba(225, 29, 46, 0.28);
+    --button-tertiary-hover: rgba(225, 29, 46, 0.14);
 
     // Lines
     --border-normal: #{$line};
     --border-divider: #{$line-soft};
     --border-disabled: #{$line-soft};
 
-    // Page background: soft blue glows over deep navy, like the landing page
+    // Page background — deep black with red glow (same feel as the banner)
     background:
-        radial-gradient(ellipse 70% 45% at 50% -8%, rgba(37, 99, 235, 0.24), transparent 70%),
-        radial-gradient(ellipse 40% 35% at 92% 35%, rgba(99, 102, 241, 0.12), transparent 70%),
-        radial-gradient(ellipse 40% 35% at 6% 80%, rgba(34, 211, 238, 0.07), transparent 70%),
-        $navy-950;
+        radial-gradient(ellipse 70% 45% at 50% -8%, rgba(225, 29, 46, 0.22), transparent 70%),
+        radial-gradient(ellipse 40% 35% at 92% 35%, rgba(225, 29, 46, 0.10), transparent 70%),
+        radial-gradient(ellipse 40% 35% at 6% 80%, rgba(225, 29, 46, 0.06), transparent 70%),
+        $black-950;
     background-attachment: fixed;
 
-    // Let the page background show through
     .bot-dashboard,
     .main {
         background: transparent;
     }
 
-    // Header (no blur effect: it trapped the account dropdown behind the tabs on phones)
+    // Header
     .app-header {
-        background: linear-gradient(180deg, rgba(11, 26, 51, 0.98), rgba(7, 18, 37, 0.98)) !important;
+        background: linear-gradient(180deg, rgba(10, 10, 10, 0.98), rgba(5, 5, 5, 0.98)) !important;
         border-bottom: 1px solid $line;
-        box-shadow: 0 8px 30px rgba(2, 8, 20, 0.4);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
     }
 
-    // Nav bar: Dashboard, Bot Builder, Charts, Tutorials and the TradersKit tabs
+    // Nav bar
     .main__container {
         .dc-tabs__list {
-            background: linear-gradient(90deg, rgba(10, 26, 58, 0.96), rgba(14, 34, 80, 0.96));
+            background: linear-gradient(90deg, rgba(15, 15, 15, 0.96), rgba(22, 22, 22, 0.96));
             border: 1px solid $line;
             border-radius: 1.2rem 1.2rem 0 0;
-            box-shadow: 0 10px 30px rgba(2, 8, 20, 0.35);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
 
         .dc-tabs__item {
             font-weight: 700;
             letter-spacing: 0.01em;
-            transition:
-                background 0.2s ease,
-                color 0.2s ease,
-                box-shadow 0.2s ease;
+            transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 
             &:hover {
-                background: rgba(59, 130, 246, 0.18);
+                background: rgba(225, 29, 46, 0.18);
             }
         }
 
         .dc-tabs__active {
             background: $button-gradient;
-            box-shadow: 0 6px 22px rgba(37, 99, 235, 0.45);
+            box-shadow: 0 6px 22px $red-glow;
         }
 
-        // Hide the thin line the template draws under the active tab
         .dc-tabs__active-line {
             background-color: transparent;
         }
@@ -319,14 +306,14 @@ $line-light-soft: rgba(13, 148, 136, 0.12);
     .main__run-strategy-wrapper {
         .animation__button#db-animation__run-button {
             background: $button-gradient;
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            box-shadow: 0 6px 20px $red-glow;
         }
 
         .animation__container {
             border: 1px solid $line;
             border-radius: 1rem;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(2, 8, 20, 0.45);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
     }
 }
@@ -335,8 +322,6 @@ $line-light-soft: rgba(13, 148, 136, 0.12);
 // BOTH THEMES
 // ---------------------------------------------------------------------------
 
-// Pages we added inside the tabs (Analysis Tool, Bulk Trader, Coming soon) must fill the whole tab area.
-// On wide screens the template lays the tab content out as a row, which otherwise shrinks them.
 .main__container {
     .analysis-tool,
     .coming-soon {
@@ -347,14 +332,11 @@ $line-light-soft: rgba(13, 148, 136, 0.12);
     }
 }
 
-// Tab bar: with many tabs, scroll sideways instead of wrapping.
 .main__container {
     .dc-tabs__list {
         flex-wrap: nowrap;
         overflow-x: auto;
         overflow-y: hidden;
-
-        // Firefox
         scrollbar-width: thin;
         scrollbar-color: $scroll-thumb transparent;
     }
@@ -366,12 +348,10 @@ $line-light-soft: rgba(13, 148, 136, 0.12);
     }
 }
 
-// Only when the Run panel sits in the top-right corner, keep the tabs clear of it.
 .bot-dashboard:has(.main__run-strategy-wrapper) .main__container .dc-tabs__list {
     max-width: calc(100% - 55rem);
 }
 
-// Phones: make the header buttons (Deposit, Transfer) smaller so they all fit on the screen
 @media (max-width: 600px) {
     .app-header--mobile .auth-actions {
         gap: 0.4rem;
@@ -385,7 +365,6 @@ $line-light-soft: rgba(13, 148, 136, 0.12);
     }
 }
 
-// Chrome, Edge and Safari: a thin scrollbar with no arrow buttons
 @supports selector(::-webkit-scrollbar) {
     .main__container .dc-tabs__list {
         scrollbar-width: auto;
@@ -416,10 +395,10 @@ $line-light-soft: rgba(13, 148, 136, 0.12);
     }
 
     body.theme--light .main__container .dc-tabs__list::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.4);
+        background: rgba(255, 255, 255, 0.35);
 
         &:hover {
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.55);
         }
     }
 }
