@@ -1,4 +1,5 @@
-// TradersKit workspace theme: bright light interface and dark navy interface, both with blue-to-cyan accents.
+// TradersKit workspace theme: a bright light interface (navy tab bar, mint surfaces, teal accents)
+// and a dark navy interface, both with blue accents.
 // Each theme only applies to its own body class, so the landing page is untouched.
 // The selectors start with :root so they outrank the template's own `:root .theme--*` rules.
 
@@ -24,17 +25,21 @@ $scroll-thumb-hover: #3b5a99;
 $button-gradient: linear-gradient(135deg, $blue-500 0%, $indigo-500 100%);
 
 // Light theme colours
-$ink-900: #0b1a33;
-$ink-700: #1e2f4d;
-$ink-500: #5b6b86;
-$sky-50: #f5f9ff;
-$sky-100: #eaf2ff;
-$sky-150: #e1ecfd;
-$sky-200: #d0e0fa;
-$sky-300: #c3d6f5;
-$line-light: rgba(37, 99, 235, 0.16);
-$line-light-soft: rgba(37, 99, 235, 0.1);
-$accent-gradient: linear-gradient(135deg, $blue-500 0%, $cyan-500 100%);
+$ink-900: #0b1f33;
+$ink-700: #1f3347;
+$ink-500: #5a6f80;
+$mint-25: #f5fbfa;
+$mint-50: #f3fbf9;
+$mint-100: #e6f6f3;
+$mint-150: #dff3ef;
+$mint-200: #cdebe6;
+$teal-500: #14b8a6;
+$teal-600: #0d9488;
+$bar-navy: #0b3b73;
+$bar-navy-end: #0a4a8c;
+$bar-active: #1a63c4;
+$line-light: rgba(13, 148, 136, 0.2);
+$line-light-soft: rgba(13, 148, 136, 0.12);
 
 // ---------------------------------------------------------------------------
 // LIGHT THEME: clean, bright and professional
@@ -42,25 +47,25 @@ $accent-gradient: linear-gradient(135deg, $blue-500 0%, $cyan-500 100%);
 :root body.theme--light {
     // Surfaces
     --general-main-1: #ffffff;
-    --general-main-2: #{$sky-50};
-    --general-main-3: #{$sky-100};
-    --du-general-main-2: #{$sky-50};
-    --general-section-1: #eef4fe;
+    --general-main-2: #{$mint-50};
+    --general-main-3: #{$mint-100};
+    --du-general-main-2: #{$mint-50};
+    --general-section-1: #{$mint-25};
     --general-section-2: #ffffff;
-    --general-section-3: #{$sky-100};
-    --general-section-4: #{$sky-100};
-    --general-section-5: #{$sky-100};
-    --general-disabled: #e6edf8;
-    --general-hover: #{$sky-150};
-    --general-active: #{$sky-200};
+    --general-section-3: #{$mint-100};
+    --general-section-4: #{$mint-100};
+    --general-section-5: #{$mint-100};
+    --general-disabled: #e3eeec;
+    --general-hover: #{$mint-150};
+    --general-active: #{$mint-200};
 
     // States and fills
     --state-normal: #ffffff;
-    --state-hover: #{$sky-150};
-    --state-active: #{$sky-200};
-    --state-disabled: #e6edf8;
+    --state-hover: #{$mint-150};
+    --state-active: #{$mint-200};
+    --state-disabled: #e3eeec;
     --fill-normal: #ffffff;
-    --fill-normal-1: #{$sky-100};
+    --fill-normal-1: #{$mint-100};
 
     // Text
     --text-prominent: #{$ink-900};
@@ -72,19 +77,17 @@ $accent-gradient: linear-gradient(135deg, $blue-500 0%, $cyan-500 100%);
     --button-primary-hover: #{$blue-600};
     --button-primary-light-default: rgba(37, 99, 235, 0.1);
     --button-primary-light-hover: rgba(37, 99, 235, 0.18);
-    --button-tertiary-hover: rgba(37, 99, 235, 0.08);
+    --button-tertiary-hover: rgba(13, 148, 136, 0.1);
 
     // Lines
     --border-normal: #{$line-light};
     --border-divider: #{$line-light-soft};
     --border-disabled: #{$line-light-soft};
 
-    // Page background: soft blue and cyan glows over a bright, pale base
+    // Page background: clean white with a faint mint glow at the top
     background:
-        radial-gradient(ellipse 70% 45% at 50% -8%, rgba(37, 99, 235, 0.14), transparent 70%),
-        radial-gradient(ellipse 40% 35% at 94% 30%, rgba(99, 102, 241, 0.08), transparent 70%),
-        radial-gradient(ellipse 40% 35% at 4% 85%, rgba(6, 182, 212, 0.09), transparent 70%),
-        #f4f8ff;
+        radial-gradient(ellipse 70% 30% at 50% -6%, rgba(20, 184, 166, 0.1), transparent 70%),
+        #ffffff;
     background-attachment: fixed;
 
     // Let the page background show through
@@ -93,20 +96,72 @@ $accent-gradient: linear-gradient(135deg, $blue-500 0%, $cyan-500 100%);
         background: transparent;
     }
 
-    // Header
+    // Header: pale mint
     .app-header {
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(240, 246, 255, 0.99)) !important;
+        background: linear-gradient(180deg, #f4fcfa, #e9f7f4) !important;
         border-bottom: 1px solid $line-light;
-        box-shadow: 0 6px 24px rgba(37, 99, 235, 0.1);
+        box-shadow: 0 4px 18px rgba(13, 148, 136, 0.08);
     }
 
-    // Nav bar: Dashboard, Bot Builder, Charts, Tutorials and the TradersKit tabs
+    // Banner strip above the tabs (the live-price ticker): blue to teal, white text
+    .market-bar {
+        gap: 0.4rem 1.6rem;
+        margin-bottom: 0;
+        padding: 0.7rem 1.4rem;
+        border: 0;
+        border-radius: 0;
+        background: linear-gradient(90deg, $bar-navy, $teal-600);
+        box-shadow: none;
+
+        .market-bar__item {
+            color: rgba(255, 255, 255, 0.82);
+
+            b {
+                color: #ffffff;
+
+                &.is-up {
+                    color: #86efac;
+                }
+
+                &.is-down {
+                    color: #fca5a5;
+                }
+            }
+        }
+
+        .market-bar__amount {
+            span,
+            small {
+                color: rgba(255, 255, 255, 0.8);
+            }
+
+            strong {
+                color: #ffffff;
+            }
+        }
+
+        .market-bar__switch {
+            border-color: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.14);
+
+            button {
+                color: #ffffff;
+
+                &.is-active {
+                    background: #ffffff;
+                    color: $bar-navy;
+                }
+            }
+        }
+    }
+
+    // Nav bar: a solid navy bar with white labels and icons
     .main__container {
         .dc-tabs__list {
-            background: linear-gradient(90deg, #ffffff, #eaf2ff);
-            border: 1px solid $line-light;
-            border-radius: 1.2rem 1.2rem 0 0;
-            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.1);
+            background: linear-gradient(90deg, $bar-navy, $bar-navy-end);
+            border: 0;
+            border-radius: 0;
+            box-shadow: 0 8px 22px rgba(11, 59, 115, 0.22);
         }
 
         .dc-tabs__item {
@@ -114,18 +169,26 @@ $accent-gradient: linear-gradient(135deg, $blue-500 0%, $cyan-500 100%);
             letter-spacing: 0.01em;
             transition:
                 background 0.2s ease,
-                color 0.2s ease,
-                box-shadow 0.2s ease;
+                color 0.2s ease;
+
+            &,
+            * {
+                color: #ffffff !important;
+            }
+
+            svg,
+            svg path {
+                fill: #ffffff !important;
+            }
 
             &:hover {
-                background: rgba(37, 99, 235, 0.08);
+                background: rgba(255, 255, 255, 0.12);
             }
         }
 
-        // The active tab gets a soft blue-to-cyan wash, so its text stays easy to read
         .dc-tabs__active {
-            background: linear-gradient(135deg, rgba(37, 99, 235, 0.16), rgba(6, 182, 212, 0.2));
-            box-shadow: inset 0 -3px 0 $blue-500;
+            background: $bar-active;
+            box-shadow: inset 0 -3px 0 #67e8f9;
         }
 
         // Hide the thin line the template draws under the active tab
@@ -134,24 +197,24 @@ $accent-gradient: linear-gradient(135deg, $blue-500 0%, $cyan-500 100%);
         }
     }
 
-    // Run panel
+    // Run panel: teal, like the reference
     .main__run-strategy-wrapper {
         .animation__button#db-animation__run-button {
-            background: $button-gradient;
-            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+            background: linear-gradient(135deg, $teal-600, $teal-500);
+            box-shadow: 0 6px 18px rgba(13, 148, 136, 0.3);
         }
 
         .animation__container {
             border: 1px solid $line-light;
             border-radius: 1rem;
             overflow: hidden;
-            box-shadow: 0 10px 28px rgba(37, 99, 235, 0.14);
+            box-shadow: 0 10px 28px rgba(13, 148, 136, 0.14);
         }
     }
 
-    // Thin light scrollbar thumb for the tab bar
+    // Light scrollbar thumb on the navy tab bar
     .main__container .dc-tabs__list {
-        scrollbar-color: #{$sky-300} transparent;
+        scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
     }
 }
 
@@ -353,10 +416,10 @@ $accent-gradient: linear-gradient(135deg, $blue-500 0%, $cyan-500 100%);
     }
 
     body.theme--light .main__container .dc-tabs__list::-webkit-scrollbar-thumb {
-        background: $sky-300;
+        background: rgba(255, 255, 255, 0.4);
 
         &:hover {
-            background: #a9c4ee;
+            background: rgba(255, 255, 255, 0.6);
         }
     }
 }
