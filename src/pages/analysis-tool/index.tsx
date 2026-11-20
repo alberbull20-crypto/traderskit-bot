@@ -138,14 +138,23 @@ const AnalysisTool = () => {
         const total = ticks.length;
         const percents = counts.map(count => (total ? (count / total) * 100 : 0));
         const max = Math.max(...percents);
-        const min = Math.min(...percents);
         const even_count = counts.reduce((sum, count, digit) => (digit % 2 === 0 ? sum + count : sum), 0);
+
+        // Rank the digits from most to least frequent (ties keep digit order)
+        const ranked = counts.map((count, digit) => digit).sort((a, b) => counts[b] - counts[a] || a - b);
+        const classes = Array(10).fill('');
+        if (total > 0) {
+            classes[ranked[0]] = 'is-most';
+            classes[ranked[1]] = 'is-second-most';
+            classes[ranked[9]] = 'is-least';
+            classes[ranked[8]] = 'is-second-least';
+        }
 
         return {
             total,
             percents,
             max,
-            min,
+            classes,
             even_percent: total ? (even_count / total) * 100 : 0,
         };
     }, [ticks]);
@@ -196,6 +205,10 @@ const AnalysisTool = () => {
                         }}
                     />
                 </label>
+
+                <span className='analysis-tool__count'>
+                    {stats.total}/{windowSize}
+                </span>
             </div>
 
             <div className='analysis-tool__price'>
@@ -218,21 +231,18 @@ const AnalysisTool = () => {
                 </div>
             </div>
 
+            <h3 className='analysis-tool__dist-title'>Last {windowSize} ticks digit distribution</h3>
+
             <div className='analysis-tool__digits'>
                 {stats.percents.map((percent, digit) => {
-                    const is_highest = stats.total > 0 && percent === stats.max;
-                    const is_lowest = stats.total > 0 && percent === stats.min;
                     const is_current = last_tick && last_tick.digit === digit;
                     const fill = stats.max > 0 ? (percent / stats.max) * RING_LENGTH : 0;
 
                     return (
                         <div
-                            className={[
-                                'analysis-tool__digit',
-                                is_highest ? 'is-highest' : '',
-                                is_lowest ? 'is-lowest' : '',
-                                is_current ? 'is-current' : '',
-                            ].join(' ')}
+                            className={['analysis-tool__digit', stats.classes[digit], is_current ? 'is-current' : '']
+                                .join(' ')
+                                .trim()}
                             key={digit}
                             aria-label={`Digit ${digit}: ${percent.toFixed(2)} percent`}
                         >
@@ -249,7 +259,7 @@ const AnalysisTool = () => {
                             </svg>
                             <div className='analysis-tool__digit-text'>
                                 <strong>{digit}</strong>
-                                <span>{percent.toFixed(2)}%</span>
+                                <span>{percent.toFixed(1)}%</span>
                             </div>
                             {is_current && <i className='analysis-tool__marker' />}
                         </div>
@@ -258,9 +268,11 @@ const AnalysisTool = () => {
             </div>
 
             <p className='analysis-tool__legend'>
-                <span className='is-highest'>Most frequent</span>
-                <span className='is-lowest'>Least frequent</span>
-                <span>Rings are scaled to the most frequent digit.</span>
+                <span className='is-most'>Most frequent</span>
+                <span className='is-second-most'>Second most</span>
+                <span className='is-second-least'>Second least</span>
+                <span className='is-least'>Least frequent</span>
+                <span>▼ Current digit</span>
             </p>
 
             <div className='analysis-tool__strip'>
