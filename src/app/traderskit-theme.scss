@@ -431,10 +431,6 @@ $bar-navy-end: #12224a;
 // FIT TO SCREEN
 // ---------------------------------------------------------------------------
 
-// ---------------------------------------------------------------------------
-// FIT TO SCREEN
-// ---------------------------------------------------------------------------
-
 // Laptops and small desktops: scale everything down a little, so users do not have to zoom out.
 // The template sizes its layout in rem, so changing the root size scales all of it together.
 // "html:root" is used so these rules outrank the :root font-size set in index.html.
@@ -456,10 +452,5 @@ $bar-navy-end: #12224a;
 @media (min-width: 700px) and (max-width: 1024px) and (hover: hover) and (pointer: fine) {
     html:root {
         font-size: 46%;
-    }
-}
-    body {
-        max-width: 100%;
-        overflow-x: hidden;
     }
 }
