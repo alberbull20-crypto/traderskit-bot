@@ -1,27 +1,72 @@
+// @ts-nocheck — uses the template's Quick Strategy list, which has no type definitions
 import { useMemo, useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import { DBOT_TABS } from '@/constants/bot-contents';
+import { useStore } from '@/hooks/useStore';
+import { STRATEGIES } from '../bot-builder/quick-strategy/config';
 import '../analysis-tool/analysis-tool.scss';
 import './trading-bots.scss';
 import { BOTS, CATEGORIES, TBot, TBotCategory } from './bots';
 
-const TradingBots = () => {
+/** One card for each built-in Quick Strategy, read from the template's own list. */
+const getStrategyBots = (): TBot[] => {
+    try {
+        return Object.entries(STRATEGIES()).map(([key, strategy]) => ({
+            id: `qs-${key}`,
+            name: String(strategy?.label ?? key),
+            description:
+                typeof strategy?.description === 'string' && strategy.description
+                    ? strategy.description
+                    : 'A built-in strategy. Load it to set your market, stake and limits, then test it on a demo account.',
+            category: 'strategies' as TBotCategory,
+            badge: 'Built-in',
+            tags: ['Quick strategy', 'Demo first'],
+            file: '',
+            strategy: key,
+        }));
+    } catch (error) {
+        console.error('Could not read the built-in strategies:', error);
+        return [];
+    }
+};
+
+const TradingBots = observer(() => {
+    const { dashboard, quick_strategy } = useStore();
+    const { setActiveTab } = dashboard;
+    const { setFormVisibility, setSelectedStrategy } = quick_strategy;
+
     const [query, setQuery] = useState('');
     const [category, setCategory] = useState<'all' | TBotCategory>('all');
     const [notice, setNotice] = useState('');
 
+    const all_bots = useMemo(() => [...BOTS, ...getStrategyBots()], []);
+
     const filtered = useMemo(() => {
         const text = query.trim().toLowerCase();
-        return BOTS.filter(bot => {
+        return all_bots.filter(bot => {
             const in_category = category === 'all' || bot.category === category;
             const haystack = `${bot.name} ${bot.description} ${bot.tags.join(' ')}`.toLowerCase();
             return in_category && haystack.includes(text);
         });
-    }, [query, category]);
+    }, [all_bots, query, category]);
 
     const countFor = (id: 'all' | TBotCategory) =>
-        id === 'all' ? BOTS.length : BOTS.filter(bot => bot.category === id).length;
+        id === 'all' ? all_bots.length : all_bots.filter(bot => bot.category === id).length;
+
+    const canLoad = (bot: TBot) => Boolean(bot.strategy || bot.file);
 
     const handleLoad = (bot: TBot) => {
-        // The loader is connected in a later step.
+        setNotice('');
+
+        if (bot.strategy) {
+            // Open the Quick Strategy form with this strategy already selected.
+            setSelectedStrategy(bot.strategy);
+            setActiveTab(DBOT_TABS.BOT_BUILDER);
+            setFormVisibility(true);
+            return;
+        }
+
+        // File-based bots need a loader, which is added once real bot files exist.
         setNotice(`"${bot.name}" will open in Bot Builder once the loader is connected.`);
     };
 
@@ -97,10 +142,10 @@ const TradingBots = () => {
                             <button
                                 type='button'
                                 className='trading-bots__load'
-                                disabled={!bot.file}
+                                disabled={!canLoad(bot)}
                                 onClick={() => handleLoad(bot)}
                             >
-                                {bot.file ? 'Load bot' : 'Coming soon'}
+                                {canLoad(bot) ? 'Load bot' : 'Coming soon'}
                             </button>
                         </article>
                     ))}
@@ -113,6 +158,6 @@ const TradingBots = () => {
             </p>
         </div>
     );
-};
+});
 
 export default TradingBots;
