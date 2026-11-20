@@ -202,3 +202,22 @@ $red: #ef4444;
         transform: translateX(-50%);
     }
 }
+
+// Phones and tablets: let the page content scroll vertically. The template locks the main area and the
+// Dashboard to a fixed height with hidden overflow, which cuts off anything below the first screen.
+@media (max-width: 1024px) {
+    .main {
+        // Use the visible screen height, which excludes the browser's address bar
+        height: calc(100dvh - 6rem);
+    }
+
+    .main .main__container .dc-tabs__content {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .tab__dashboard__content {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
