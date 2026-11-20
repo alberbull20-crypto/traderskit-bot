@@ -3,27 +3,29 @@ $cyan: #06b6d4;
 $green: #10b981;
 $red: #ef4444;
 
-// The template lays the main area out as a fixed-height row. On desktop, let it wrap so the bar gets a
-// full row above the tabs, and keep that row at the bar's own height.
-.main:has(> .market-bar) {
-    flex-wrap: wrap;
-    align-content: flex-start;
-    max-width: 100%;
-    overflow-x: clip;
-
-    > .market-bar {
-        flex: 0 0 auto;
-        width: 100%;
-        min-width: 0;
+// Desktop only: the template lays the main area out as a fixed-height row, so let it wrap and give the
+// bar a full row above the tabs. Phones and tablets keep the template's own layout untouched.
+@media (min-width: 1025px) {
+    .main:has(> .market-bar) {
+        flex-wrap: wrap;
+        align-content: flex-start;
         max-width: 100%;
-        height: auto;
-    }
+        overflow-x: clip;
 
-    > .main__container {
-        flex: 1 1 auto;
-        width: 100%;
-        min-width: 0;
-        max-width: 100%;
+        > .market-bar {
+            flex: 0 0 auto;
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+            height: auto;
+        }
+
+        > .main__container {
+            flex: 1 1 auto;
+            width: 100%;
+            min-width: 0;
+            max-width: 100%;
+        }
     }
 }
 
