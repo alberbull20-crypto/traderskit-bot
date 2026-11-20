@@ -1,18 +1,448 @@
+// TradersKit workspace theme, matched to the TradersKit banner and landing page:
+// deep navy, bright blue and a green accent. The light theme is soft (no pure white).
+// Each theme only applies to its own body class, so the landing page is untouched.
+// The selectors start with :root so they outrank the template's own `:root .theme--*` rules.
+
+$navy-950: #050b1a;
+$navy-900: #081226;
+$navy-800: #0c1a35;
+$navy-750: #10224a;
+$navy-700: #15295a;
+$navy-600: #1b3470;
+
+$blue-600: #1d4ed8;
+$blue-500: #2563eb;
+$blue-vivid: #1d6bff;
+$sky-400: #38bdf8;
+$green-500: #22c55e;
+$green-600: #16a34a;
+
+$text-main: #ffffff;
+$text-body: #e2eaf7;
+$text-muted: #a8b6cc;
+
+$line: rgba(96, 165, 250, 0.2);
+$line-soft: rgba(96, 165, 250, 0.12);
+
+$scroll-thumb: #2b4270;
+$scroll-thumb-hover: #3b5a99;
+
+$button-gradient: linear-gradient(135deg, $blue-vivid 0%, $blue-600 100%);
+$run-gradient: linear-gradient(135deg, $green-600 0%, $green-500 100%);
+
+// Soft light theme colours
+$ink-900: #0b1530;
+$ink-700: #24365a;
+$ink-500: #61708f;
+$surface-white: #f9fbff;
+$surface-1: #f1f5fb;
+$surface-2: #e7eef9;
+$surface-3: #dde7f6;
+$surface-4: #d2dff2;
+$line-light: rgba(37, 99, 235, 0.18);
+$line-light-soft: rgba(37, 99, 235, 0.1);
+$bar-navy: #0b1530;
+$bar-navy-end: #12224a;
+
+// ---------------------------------------------------------------------------
+// LIGHT THEME: soft, clean and professional
+// ---------------------------------------------------------------------------
+:root body.theme--light {
+    // Surfaces
+    --general-main-1: #{$surface-white};
+    --general-main-2: #{$surface-1};
+    --general-main-3: #{$surface-2};
+    --du-general-main-2: #{$surface-1};
+    --general-section-1: #{$surface-1};
+    --general-section-2: #{$surface-white};
+    --general-section-3: #{$surface-2};
+    --general-section-4: #{$surface-2};
+    --general-section-5: #{$surface-2};
+    --general-disabled: #dbe3f0;
+    --general-hover: #{$surface-3};
+    --general-active: #{$surface-4};
+
+    // States and fills
+    --state-normal: #{$surface-white};
+    --state-hover: #{$surface-3};
+    --state-active: #{$surface-4};
+    --state-disabled: #dbe3f0;
+    --fill-normal: #{$surface-white};
+    --fill-normal-1: #{$surface-2};
+
+    // Text
+    --text-prominent: #{$ink-900};
+    --text-general: #{$ink-700};
+    --text-less-prominent: #{$ink-500};
+
+    // Buttons: blue instead of the template's red hover and pressed states
+    --button-primary-default: #{$blue-500};
+    --button-primary-hover: #{$blue-600};
+    --button-primary-light-default: rgba(37, 99, 235, 0.1);
+    --button-primary-light-hover: rgba(37, 99, 235, 0.18);
+    --button-tertiary-hover: rgba(37, 99, 235, 0.08);
+
+    // Lines
+    --border-normal: #{$line-light};
+    --border-divider: #{$line-light-soft};
+    --border-disabled: #{$line-light-soft};
+
+    // Page background: soft cool grey with a faint blue glow at the top
+    background:
+        radial-gradient(ellipse 70% 30% at 50% -6%, rgba(29, 107, 255, 0.1), transparent 70%),
+        $surface-1;
+    background-attachment: fixed;
+
+    // Let the page background show through
+    .bot-dashboard,
+    .main {
+        background: transparent;
+    }
+
+    // Header
+    .app-header {
+        background: linear-gradient(180deg, #f9fbff, #eef3fb) !important;
+        border-bottom: 1px solid $line-light;
+        box-shadow: 0 4px 16px rgba(11, 21, 48, 0.07);
+    }
+
+    // Banner strip above the tabs (the live-price ticker): navy to blue, white text
+    .market-bar {
+        gap: 0.4rem 1.6rem;
+        margin-bottom: 0;
+        padding: 0.7rem 1.4rem;
+        border: 0;
+        border-radius: 0;
+        background: linear-gradient(90deg, $bar-navy, $blue-600);
+        box-shadow: none;
+
+        .market-bar__item {
+            color: rgba(255, 255, 255, 0.82);
+
+            b {
+                color: #ffffff;
+
+                &.is-up {
+                    color: #86efac;
+                }
+
+                &.is-down {
+                    color: #fca5a5;
+                }
+            }
+        }
+
+        .market-bar__amount {
+            span,
+            small {
+                color: rgba(255, 255, 255, 0.8);
+            }
+
+            strong {
+                color: #ffffff;
+            }
+        }
+
+        .market-bar__switch {
+            border-color: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.14);
+
+            button {
+                color: #ffffff;
+
+                &.is-active {
+                    background: #ffffff;
+                    color: $bar-navy;
+                }
+            }
+        }
+    }
+
+    // Nav bar: a solid navy bar with white labels and icons
+    .main__container {
+        .dc-tabs__list {
+            background: linear-gradient(90deg, $bar-navy, $bar-navy-end);
+            border: 0;
+            border-radius: 0;
+            box-shadow: 0 8px 22px rgba(11, 21, 48, 0.2);
+        }
+
+        .dc-tabs__item {
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+
+            &,
+            * {
+                color: #ffffff !important;
+            }
+
+            svg,
+            svg path {
+                fill: #ffffff !important;
+            }
+
+            &:hover {
+                background: rgba(255, 255, 255, 0.12);
+            }
+        }
+
+        .dc-tabs__active {
+            background: $blue-vivid;
+            box-shadow: inset 0 -3px 0 $sky-400;
+        }
+
+        // Hide the thin line the template draws under the active tab
+        .dc-tabs__active-line {
+            background-color: transparent;
+        }
+    }
+
+    // Run panel: green, like the banner's arrow
+    .main__run-strategy-wrapper {
+        .animation__button#db-animation__run-button {
+            background: $run-gradient;
+            box-shadow: 0 6px 18px rgba(34, 197, 94, 0.35);
+        }
+
+        .animation__container {
+            border: 1px solid $line-light;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 26px rgba(11, 21, 48, 0.1);
+        }
+    }
+
+    // Light scrollbar thumb on the navy tab bar
+    .main__container .dc-tabs__list {
+        scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// DARK THEME: deep navy with blue accents
+// ---------------------------------------------------------------------------
+:root body.theme--dark {
+    // Surfaces
+    --general-main-1: #{$navy-900};
+    --general-main-2: #{$navy-800};
+    --general-main-3: #{$navy-750};
+    --du-general-main-2: #{$navy-800};
+    --general-section-1: #{$navy-950};
+    --general-section-2: #{$navy-900};
+    --general-section-3: #{$navy-750};
+    --general-section-4: #{$navy-750};
+    --general-section-5: #{$navy-750};
+    --general-disabled: #{$navy-750};
+    --general-hover: #{$navy-700};
+    --general-active: #{$navy-600};
+
+    // States and fills
+    --state-normal: #{$navy-900};
+    --state-hover: #{$navy-700};
+    --state-active: #{$navy-600};
+    --state-disabled: #{$navy-750};
+    --fill-normal: #{$navy-900};
+    --fill-normal-1: #{$navy-750};
+
+    // Text
+    --text-prominent: #{$text-main};
+    --text-general: #{$text-body};
+    --text-less-prominent: #{$text-muted};
+
+    // Buttons: blue instead of the template's red hover and pressed states
+    --button-primary-default: #{$blue-500};
+    --button-primary-hover: #{$blue-600};
+    --button-primary-light-default: rgba(37, 99, 235, 0.16);
+    --button-primary-light-hover: rgba(37, 99, 235, 0.28);
+    --button-tertiary-hover: rgba(37, 99, 235, 0.14);
+
+    // Lines
+    --border-normal: #{$line};
+    --border-divider: #{$line-soft};
+    --border-disabled: #{$line-soft};
+
+    // Page background: soft blue and green glows over deep navy, like the banner
+    background:
+        radial-gradient(ellipse 70% 45% at 50% -8%, rgba(29, 107, 255, 0.26), transparent 70%),
+        radial-gradient(ellipse 40% 35% at 92% 35%, rgba(56, 189, 248, 0.1), transparent 70%),
+        radial-gradient(ellipse 40% 35% at 6% 80%, rgba(34, 197, 94, 0.07), transparent 70%),
+        $navy-950;
+    background-attachment: fixed;
+
+    // Let the page background show through
+    .bot-dashboard,
+    .main {
+        background: transparent;
+    }
+
+    // Header (no blur effect: it trapped the account dropdown behind the tabs on phones)
+    .app-header {
+        background: linear-gradient(180deg, rgba(12, 26, 53, 0.98), rgba(8, 18, 38, 0.98)) !important;
+        border-bottom: 1px solid $line;
+        box-shadow: 0 8px 30px rgba(2, 8, 20, 0.4);
+    }
+
+    // Nav bar
+    .main__container {
+        .dc-tabs__list {
+            background: linear-gradient(90deg, rgba(10, 26, 58, 0.96), rgba(16, 34, 74, 0.96));
+            border: 1px solid $line;
+            border-radius: 1.2rem 1.2rem 0 0;
+            box-shadow: 0 10px 30px rgba(2, 8, 20, 0.35);
+        }
+
+        .dc-tabs__item {
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                box-shadow 0.2s ease;
+
+            &:hover {
+                background: rgba(59, 130, 246, 0.18);
+            }
+        }
+
+        .dc-tabs__active {
+            background: $button-gradient;
+            box-shadow: 0 6px 22px rgba(29, 107, 255, 0.45);
+        }
+
+        // Hide the thin line the template draws under the active tab
+        .dc-tabs__active-line {
+            background-color: transparent;
+        }
+    }
+
+    // Run panel
+    .main__run-strategy-wrapper {
+        .animation__button#db-animation__run-button {
+            background: $run-gradient;
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+        }
+
+        .animation__container {
+            border: 1px solid $line;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(2, 8, 20, 0.45);
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// BOTH THEMES
+// ---------------------------------------------------------------------------
+
+// Pages we added inside the tabs (Analysis Tool, Bulk Trader, Coming soon) must fill the whole tab area.
+// On wide screens the template lays the tab content out as a row, which otherwise shrinks them.
+.main__container {
+    .analysis-tool,
+    .coming-soon {
+        box-sizing: border-box;
+        flex: 1 1 100%;
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+// Tab bar: with many tabs, scroll sideways instead of wrapping.
+.main__container {
+    .dc-tabs__list {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        // Firefox
+        scrollbar-width: thin;
+        scrollbar-color: $scroll-thumb transparent;
+    }
+
+    .dc-tabs__item {
+        flex-shrink: 0;
+        padding: 0 1.4rem;
+        white-space: nowrap;
+    }
+}
+
+// Only when the Run panel sits in the top-right corner, keep the tabs clear of it.
+.bot-dashboard:has(.main__run-strategy-wrapper) .main__container .dc-tabs__list {
+    max-width: calc(100% - 55rem);
+}
+
+// Phones: make the header buttons (Deposit, Transfer) smaller so they all fit on the screen
+@media (max-width: 600px) {
+    .app-header--mobile .auth-actions {
+        gap: 0.4rem;
+    }
+
+    .app-header--mobile .auth-actions button {
+        min-width: 0;
+        height: 3.2rem;
+        padding: 0 1rem;
+        font-size: 1.3rem;
+    }
+}
+
+// Chrome, Edge and Safari: a thin scrollbar with no arrow buttons
+@supports selector(::-webkit-scrollbar) {
+    .main__container .dc-tabs__list {
+        scrollbar-width: auto;
+        scrollbar-color: auto;
+
+        &::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: $scroll-thumb;
+            border-radius: 3px;
+
+            &:hover {
+                background: $scroll-thumb-hover;
+            }
+        }
+
+        &::-webkit-scrollbar-button {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+    }
+
+    body.theme--light .main__container .dc-tabs__list::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.35);
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.55);
+        }
+    }
+}
+
 // ---------------------------------------------------------------------------
 // FIT TO SCREEN
 // ---------------------------------------------------------------------------
 
 // Laptops and small desktops: scale everything down a little, so users do not have to zoom out.
 // The template sizes its layout in rem, so changing the root size scales all of it together.
+// "html:root" is used so these rules outrank the :root font-size set in index.html.
 @media (min-width: 1025px) and (max-width: 1500px) {
-    html {
-        font-size: 56%;
+    html:root {
+        font-size: 54%;
     }
 }
 
 @media (min-width: 1501px) and (max-width: 1800px) {
-    html {
-        font-size: 60%;
+    html:root {
+        font-size: 58%;
     }
 }
 
@@ -23,10 +453,5 @@
     body {
         max-width: 100%;
         overflow-x: hidden;
-    }
-
-    html {
-        -webkit-text-size-adjust: 100%;
-        text-size-adjust: 100%;
     }
 }
