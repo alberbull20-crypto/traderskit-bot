@@ -387,7 +387,8 @@ const AppWrapper = observer(() => {
     return (
         <React.Fragment>
             <div className='main'>
-                <MarketBar />
+                {/* The ticker bar is hidden on Bot Builder, whose panel is positioned for the tabs sitting directly under the header */}
+                {active_tab !== BOT_BUILDER && <MarketBar />}
                 <div
                     className={classNames('main__container', {
                         'main__container--active': active_tour && active_tab === DASHBOARD && !isDesktop,
