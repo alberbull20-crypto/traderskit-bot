@@ -431,6 +431,10 @@ $bar-navy-end: #12224a;
 // FIT TO SCREEN
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// FIT TO SCREEN
+// ---------------------------------------------------------------------------
+
 // Laptops and small desktops: scale everything down a little, so users do not have to zoom out.
 // The template sizes its layout in rem, so changing the root size scales all of it together.
 // "html:root" is used so these rules outrank the :root font-size set in index.html.
@@ -446,10 +450,14 @@ $bar-navy-end: #12224a;
     }
 }
 
-// Phones and tablets: never let the page become wider than the screen.
-// The tab row still scrolls sideways on its own.
-@media (max-width: 1024px) {
-    html,
+// Computers with a mouse whose window is narrow (common with Windows display scaling): the template switches to
+// its tablet layout here, so shrink everything a little to make it fit without browser zoom.
+// The pointer check keeps real phones and tablets unaffected.
+@media (min-width: 700px) and (max-width: 1024px) and (hover: hover) and (pointer: fine) {
+    html:root {
+        font-size: 46%;
+    }
+}
     body {
         max-width: 100%;
         overflow-x: hidden;
