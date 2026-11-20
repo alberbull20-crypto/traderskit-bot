@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import { ToastContainer } from 'react-toastify';
 import AuthLoadingWrapper from '@/components/auth-loading-wrapper';
 import { botNotification } from '@/components/bot-notification/bot-notification';
-import useLiveChat from '@/components/chat/useLiveChat';
 import ChunkLoader from '@/components/loader/chunk-loader';
 import { getUrlBase } from '@/components/shared';
 import TransactionDetailsModal from '@/components/transaction-details';
@@ -72,18 +71,8 @@ const AppContent = observer(() => {
         }
     }, []);
 
-    const livechat_client_information = {
-        is_client_store_initialized: client?.is_logged_in ? true : !!client,
-        is_logged_in: client?.is_logged_in,
-        loginid: client?.loginid,
-        currency: client?.currency,
-        residence: client?.residence,
-        email: '',
-        first_name: '',
-        last_name: '',
-    };
-
-    useLiveChat(livechat_client_information);
+    // TradersKit: the template's LiveChat widget and Google Tag Manager start-up were removed on purpose,
+    // so visitor activity is not sent to accounts we do not control.
 
     // NOTE: Disabled Intercom until further notice
     // const token = V2GetActiveToken() ?? null;
@@ -144,9 +133,6 @@ const AppContent = observer(() => {
         ServerTime.init(common);
         app.setDBotEngineStores();
         ApiHelpers.setInstance(app.api_helpers_store);
-        import('@/utils/gtm').then(({ default: GTM }) => {
-            GTM.init(store);
-        });
     };
 
     const changeActiveSymbolLoadingState = () => {
