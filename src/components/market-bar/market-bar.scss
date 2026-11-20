@@ -3,11 +3,11 @@ $cyan: #06b6d4;
 $green: #10b981;
 $red: #ef4444;
 
-// The template lays the main area out as a row on wide screens and as a column on phones.
-// The bar must take a full row on desktop and only its own height on phones, and it must never be
-// wider than the screen.
+// The template lays the main area out as a fixed-height row. On desktop, let it wrap so the bar gets a
+// full row above the tabs, and keep that row at the bar's own height.
 .main:has(> .market-bar) {
     flex-wrap: wrap;
+    align-content: flex-start;
     max-width: 100%;
     overflow-x: clip;
 
@@ -31,7 +31,6 @@ $red: #ef4444;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    align-content: flex-start;
     gap: 0.4rem 1.6rem;
     box-sizing: border-box;
     width: 100%;
@@ -165,47 +164,6 @@ $red: #ef4444;
         }
     }
 
-    // Phones: a slim bar. The ticker keeps its own thin row and the balance sits below it.
-    @media (max-width: 700px) {
-        padding: 0.4rem 0.8rem;
-        gap: 0.2rem 0.8rem;
-
-        &__ticker {
-            flex: 1 1 100%;
-        }
-
-        &__item {
-            padding: 0 1rem;
-            font-size: 1.1rem;
-
-            b {
-                font-size: 1.2rem;
-            }
-        }
-
-        &__balance {
-            flex: 1 1 100%;
-            justify-content: space-between;
-            margin-left: 0;
-        }
-
-        &__amount {
-            strong {
-                font-size: 1.4rem;
-            }
-
-            small {
-                display: none;
-            }
-        }
-
-        &__switch button {
-            min-width: 4.4rem;
-            padding: 0.3rem 0.9rem;
-            font-size: 1.2rem;
-        }
-    }
-
     // Visitors who prefer less motion get a strip they scroll themselves
     @media (prefers-reduced-motion: reduce) {
         &__ticker {
@@ -223,6 +181,14 @@ $red: #ef4444;
 // Same rule the tabs use: when the Run panel sits in the top-right corner, keep clear of it
 .bot-dashboard:has(.main__run-strategy-wrapper) .market-bar {
     max-width: calc(100% - 55rem);
+}
+
+// Phones and tablets: the template sizes its panels for the tabs sitting directly under the header,
+// so the bar is hidden there until it has a better home.
+@media (max-width: 1024px) {
+    .main > .market-bar {
+        display: none;
+    }
 }
 
 @keyframes market-bar-scroll {
