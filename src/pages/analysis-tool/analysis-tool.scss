@@ -2,6 +2,9 @@ $cyan: #22d3ee;
 $blue: #3b82f6;
 $indigo: #818cf8;
 $amber: #f59e0b;
+$green: #16a34a;
+$red: #ef4444;
+$strong-blue: #2563eb;
 
 .analysis-tool {
     // Solid background above the Bot Builder workspace, which the template keeps running behind the tabs
@@ -51,6 +54,7 @@ $amber: #f59e0b;
     &__controls {
         display: flex;
         flex-wrap: wrap;
+        align-items: flex-end;
         gap: 1.6rem;
         margin-bottom: 2rem;
     }
@@ -82,6 +86,17 @@ $amber: #f59e0b;
                 border-color: $blue;
             }
         }
+    }
+
+    &__count {
+        align-self: flex-end;
+        margin-bottom: 0.6rem;
+        padding: 0.7rem 1.4rem;
+        border-radius: 999px;
+        background: var(--general-main-3);
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--text-less-prominent);
     }
 
     /* ---------- Price ---------- */
@@ -143,15 +158,24 @@ $amber: #f59e0b;
     }
 
     /* ---------- Digit circles ---------- */
+    &__dist-title {
+        margin: 0 0 1rem;
+        font-size: 1.7rem;
+        font-weight: 700;
+        color: var(--text-prominent);
+    }
+
     &__digits {
         display: grid;
         grid-template-columns: repeat(10, 1fr);
         gap: 1.2rem;
         margin-bottom: 1.2rem;
+        // Room above the circles for the marker over the current digit
+        padding-top: 2.2rem;
 
         @media (max-width: 1100px) {
             grid-template-columns: repeat(5, 1fr);
-            gap: 1.6rem 1.2rem;
+            gap: 2.2rem 1.2rem;
         }
     }
 
@@ -187,16 +211,49 @@ $amber: #f59e0b;
         transition: stroke-dasharray 0.4s ease;
     }
 
-    &__digit.is-highest &__ring-fill {
-        stroke: $cyan;
+    // Ranked digits are drawn as solid coloured circles with white text
+    &__digit.is-most &__ring-track {
+        fill: $green;
+        stroke: $green;
     }
 
-    &__digit.is-lowest &__ring-fill {
+    &__digit.is-second-most &__ring-track {
+        fill: $strong-blue;
+        stroke: $strong-blue;
+    }
+
+    &__digit.is-least &__ring-track {
+        fill: $red;
+        stroke: $red;
+    }
+
+    &__digit.is-second-least &__ring-track {
+        fill: $amber;
         stroke: $amber;
     }
 
+    &__digit.is-most &__ring-fill,
+    &__digit.is-second-most &__ring-fill,
+    &__digit.is-least &__ring-fill,
+    &__digit.is-second-least &__ring-fill {
+        stroke: rgba(255, 255, 255, 0.55);
+    }
+
+    &__digit.is-most &__digit-text strong,
+    &__digit.is-second-most &__digit-text strong,
+    &__digit.is-least &__digit-text strong,
+    &__digit.is-second-least &__digit-text strong,
+    &__digit.is-most &__digit-text span,
+    &__digit.is-second-most &__digit-text span,
+    &__digit.is-least &__digit-text span,
+    &__digit.is-second-least &__digit-text span {
+        color: #ffffff;
+    }
+
+    // The digit that just appeared gets a bright ring
     &__digit.is-current &__ring-track {
-        stroke: $cyan;
+        stroke: $strong-blue;
+        stroke-width: 9;
     }
 
     &__digit-text {
@@ -216,16 +273,17 @@ $amber: #f59e0b;
         }
     }
 
+    // A marker above the current digit
     &__marker {
         position: absolute;
-        bottom: -1rem;
+        top: -1.6rem;
         left: 50%;
         width: 0;
         height: 0;
         transform: translateX(-50%);
-        border-left: 0.7rem solid transparent;
-        border-right: 0.7rem solid transparent;
-        border-bottom: 0.9rem solid $cyan;
+        border-left: 0.8rem solid transparent;
+        border-right: 0.8rem solid transparent;
+        border-top: 1rem solid $strong-blue;
     }
 
     &__legend {
@@ -236,8 +294,10 @@ $amber: #f59e0b;
         font-size: 1.2rem;
         color: var(--text-less-prominent);
 
-        .is-highest::before,
-        .is-lowest::before {
+        .is-most::before,
+        .is-second-most::before,
+        .is-least::before,
+        .is-second-least::before {
             content: '';
             display: inline-block;
             width: 0.9rem;
@@ -246,11 +306,19 @@ $amber: #f59e0b;
             border-radius: 50%;
         }
 
-        .is-highest::before {
-            background: $cyan;
+        .is-most::before {
+            background: $green;
         }
 
-        .is-lowest::before {
+        .is-second-most::before {
+            background: $strong-blue;
+        }
+
+        .is-least::before {
+            background: $red;
+        }
+
+        .is-second-least::before {
             background: $amber;
         }
     }
