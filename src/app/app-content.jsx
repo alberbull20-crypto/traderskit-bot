@@ -52,9 +52,9 @@ const AppContent = observer(() => {
     // After this one-time switch, the theme toggle works as normal.
     useEffect(() => {
         try {
-            if (!localStorage.getItem('traderskit_theme_initialised')) {
-                localStorage.setItem('traderskit_theme_initialised', '1');
-                setTheme('dark');
+                        if (!localStorage.getItem('traderskit_theme_initialised_v2')) {
+                localStorage.setItem('traderskit_theme_initialised_v2', '1');
+                setTheme('light');
             }
         } catch (error) {
             console.error('Could not set the default theme:', error);
