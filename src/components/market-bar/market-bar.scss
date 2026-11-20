@@ -3,20 +3,27 @@ $cyan: #06b6d4;
 $green: #10b981;
 $red: #ef4444;
 
-// The template lays the main area out as a row. Without these rules the bar was squeezed into a narrow
-// strip down the left edge. Let the area wrap, so the bar gets a full row above the tabs.
+// The template lays the main area out as a row on wide screens and as a column on phones.
+// The bar must take a full row on desktop and only its own height on phones, and it must never be
+// wider than the screen.
 .main:has(> .market-bar) {
     flex-wrap: wrap;
+    max-width: 100%;
+    overflow-x: clip;
 
     > .market-bar {
-        flex: 0 0 100%;
+        flex: 0 0 auto;
         width: 100%;
         min-width: 0;
+        max-width: 100%;
+        height: auto;
     }
 
     > .main__container {
-        flex: 1 1 100%;
+        flex: 1 1 auto;
+        width: 100%;
         min-width: 0;
+        max-width: 100%;
     }
 }
 
@@ -24,9 +31,12 @@ $red: #ef4444;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.8rem 1.6rem;
+    align-content: flex-start;
+    gap: 0.4rem 1.6rem;
     box-sizing: border-box;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     margin-bottom: 0.8rem;
     padding: 0.6rem 1.2rem;
     border: 1px solid var(--border-normal);
@@ -37,6 +47,7 @@ $red: #ef4444;
     &__ticker {
         flex: 1 1 28rem;
         min-width: 0;
+        max-width: 100%;
         overflow: hidden;
         // Soft fade at both ends of the strip
         -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
@@ -93,9 +104,12 @@ $red: #ef4444;
 
     &__balance {
         display: flex;
-        flex: 0 0 auto;
+        flex: 0 1 auto;
+        flex-wrap: wrap;
         align-items: center;
-        gap: 1.2rem;
+        gap: 0.6rem 1.2rem;
+        min-width: 0;
+        max-width: 100%;
         margin-left: auto;
     }
 
@@ -104,6 +118,7 @@ $red: #ef4444;
         flex-wrap: wrap;
         align-items: baseline;
         gap: 0.2rem 0.8rem;
+        min-width: 0;
 
         span {
             font-size: 1.2rem;
@@ -123,6 +138,7 @@ $red: #ef4444;
 
     &__switch {
         display: inline-flex;
+        flex-shrink: 0;
         padding: 0.2rem;
         border: 1px solid var(--border-normal);
         border-radius: 999px;
@@ -149,13 +165,44 @@ $red: #ef4444;
         }
     }
 
+    // Phones: a slim bar. The ticker keeps its own thin row and the balance sits below it.
     @media (max-width: 700px) {
-        padding: 0.6rem 0.8rem;
+        padding: 0.4rem 0.8rem;
+        gap: 0.2rem 0.8rem;
+
+        &__ticker {
+            flex: 1 1 100%;
+        }
+
+        &__item {
+            padding: 0 1rem;
+            font-size: 1.1rem;
+
+            b {
+                font-size: 1.2rem;
+            }
+        }
 
         &__balance {
-            width: 100%;
+            flex: 1 1 100%;
             justify-content: space-between;
             margin-left: 0;
+        }
+
+        &__amount {
+            strong {
+                font-size: 1.4rem;
+            }
+
+            small {
+                display: none;
+            }
+        }
+
+        &__switch button {
+            min-width: 4.4rem;
+            padding: 0.3rem 0.9rem;
+            font-size: 1.2rem;
         }
     }
 
