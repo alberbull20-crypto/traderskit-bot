@@ -8,6 +8,7 @@ import { useApiBase } from '@/hooks/useApiBase';
 import { useLogout } from '@/hooks/useLogout';
 import { useStore } from '@/hooks/useStore';
 import { navigateToTransfer } from '@/utils/transfer-utils';
+import { DEPOSIT_URL, WITHDRAW_URL } from '@/utils/traderskit-links';
 import { Localize } from '@deriv-com/translations';
 import { Header, useDevice, Wrapper } from '@deriv-com/ui';
 import { AppLogo } from '../app-logo';
@@ -144,13 +145,27 @@ const AppHeader = observer(() => {
                         </div>
                     );
                 } else if (position === 'right') {
-                    // For right section - transfer button (and account switcher on desktop)
+                    // For right section - deposit, withdraw and transfer buttons (and account switcher on desktop)
                     return (
                         <div className='auth-actions'>
                             {isDesktop && (
                                 <div className='account-info'>
                                     <AccountSwitcher activeAccount={activeAccount} />
                                 </div>
+                            )}
+                            <Button
+                                primary_light
+                                onClick={() => window.open(DEPOSIT_URL, '_blank', 'noopener,noreferrer')}
+                            >
+                                <Localize i18n_default_text='Deposit' />
+                            </Button>
+                            {isDesktop && (
+                                <Button
+                                    tertiary
+                                    onClick={() => window.open(WITHDRAW_URL, '_blank', 'noopener,noreferrer')}
+                                >
+                                    <Localize i18n_default_text='Withdraw' />
+                                </Button>
                             )}
                             <Button
                                 primary
