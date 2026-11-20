@@ -1,6 +1,6 @@
-// TradersKit workspace theme: dark navy with blue accents.
-// Only applies in dark mode, so the light theme and the landing page are untouched.
-// The selector starts with :root so it outranks the template's own `:root .theme--dark` rules.
+// TradersKit workspace theme: bright light interface and dark navy interface, both with blue-to-cyan accents.
+// Each theme only applies to its own body class, so the landing page is untouched.
+// The selectors start with :root so they outrank the template's own `:root .theme--*` rules.
 
 $navy-950: #040a17;
 $navy-900: #071225;
@@ -12,6 +12,7 @@ $blue-600: #1d4ed8;
 $blue-500: #2563eb;
 $blue-400: #3b82f6;
 $cyan-400: #22d3ee;
+$cyan-500: #06b6d4;
 $indigo-500: #4f46e5;
 $text-main: #ffffff;
 $text-body: #e2eaf7;
@@ -22,6 +23,141 @@ $scroll-thumb: #2b4270;
 $scroll-thumb-hover: #3b5a99;
 $button-gradient: linear-gradient(135deg, $blue-500 0%, $indigo-500 100%);
 
+// Light theme colours
+$ink-900: #0b1a33;
+$ink-700: #1e2f4d;
+$ink-500: #5b6b86;
+$sky-50: #f5f9ff;
+$sky-100: #eaf2ff;
+$sky-150: #e1ecfd;
+$sky-200: #d0e0fa;
+$sky-300: #c3d6f5;
+$line-light: rgba(37, 99, 235, 0.16);
+$line-light-soft: rgba(37, 99, 235, 0.1);
+$accent-gradient: linear-gradient(135deg, $blue-500 0%, $cyan-500 100%);
+
+// ---------------------------------------------------------------------------
+// LIGHT THEME: clean, bright and professional
+// ---------------------------------------------------------------------------
+:root body.theme--light {
+    // Surfaces
+    --general-main-1: #ffffff;
+    --general-main-2: #{$sky-50};
+    --general-main-3: #{$sky-100};
+    --du-general-main-2: #{$sky-50};
+    --general-section-1: #eef4fe;
+    --general-section-2: #ffffff;
+    --general-section-3: #{$sky-100};
+    --general-section-4: #{$sky-100};
+    --general-section-5: #{$sky-100};
+    --general-disabled: #e6edf8;
+    --general-hover: #{$sky-150};
+    --general-active: #{$sky-200};
+
+    // States and fills
+    --state-normal: #ffffff;
+    --state-hover: #{$sky-150};
+    --state-active: #{$sky-200};
+    --state-disabled: #e6edf8;
+    --fill-normal: #ffffff;
+    --fill-normal-1: #{$sky-100};
+
+    // Text
+    --text-prominent: #{$ink-900};
+    --text-general: #{$ink-700};
+    --text-less-prominent: #{$ink-500};
+
+    // Buttons: blue instead of the template's red hover and pressed states
+    --button-primary-default: #{$blue-500};
+    --button-primary-hover: #{$blue-600};
+    --button-primary-light-default: rgba(37, 99, 235, 0.1);
+    --button-primary-light-hover: rgba(37, 99, 235, 0.18);
+    --button-tertiary-hover: rgba(37, 99, 235, 0.08);
+
+    // Lines
+    --border-normal: #{$line-light};
+    --border-divider: #{$line-light-soft};
+    --border-disabled: #{$line-light-soft};
+
+    // Page background: soft blue and cyan glows over a bright, pale base
+    background:
+        radial-gradient(ellipse 70% 45% at 50% -8%, rgba(37, 99, 235, 0.14), transparent 70%),
+        radial-gradient(ellipse 40% 35% at 94% 30%, rgba(99, 102, 241, 0.08), transparent 70%),
+        radial-gradient(ellipse 40% 35% at 4% 85%, rgba(6, 182, 212, 0.09), transparent 70%),
+        #f4f8ff;
+    background-attachment: fixed;
+
+    // Let the page background show through
+    .bot-dashboard,
+    .main {
+        background: transparent;
+    }
+
+    // Header
+    .app-header {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(240, 246, 255, 0.99)) !important;
+        border-bottom: 1px solid $line-light;
+        box-shadow: 0 6px 24px rgba(37, 99, 235, 0.1);
+    }
+
+    // Nav bar: Dashboard, Bot Builder, Charts, Tutorials and the TradersKit tabs
+    .main__container {
+        .dc-tabs__list {
+            background: linear-gradient(90deg, #ffffff, #eaf2ff);
+            border: 1px solid $line-light;
+            border-radius: 1.2rem 1.2rem 0 0;
+            box-shadow: 0 8px 24px rgba(37, 99, 235, 0.1);
+        }
+
+        .dc-tabs__item {
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            transition:
+                background 0.2s ease,
+                color 0.2s ease,
+                box-shadow 0.2s ease;
+
+            &:hover {
+                background: rgba(37, 99, 235, 0.08);
+            }
+        }
+
+        // The active tab gets a soft blue-to-cyan wash, so its text stays easy to read
+        .dc-tabs__active {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.16), rgba(6, 182, 212, 0.2));
+            box-shadow: inset 0 -3px 0 $blue-500;
+        }
+
+        // Hide the thin line the template draws under the active tab
+        .dc-tabs__active-line {
+            background-color: transparent;
+        }
+    }
+
+    // Run panel
+    .main__run-strategy-wrapper {
+        .animation__button#db-animation__run-button {
+            background: $button-gradient;
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .animation__container {
+            border: 1px solid $line-light;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 28px rgba(37, 99, 235, 0.14);
+        }
+    }
+
+    // Thin light scrollbar thumb for the tab bar
+    .main__container .dc-tabs__list {
+        scrollbar-color: #{$sky-300} transparent;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// DARK THEME: deep navy with blue accents (unchanged)
+// ---------------------------------------------------------------------------
 :root body.theme--dark {
     // Surfaces
     --general-main-1: #{$navy-900};
@@ -132,6 +268,10 @@ $button-gradient: linear-gradient(135deg, $blue-500 0%, $indigo-500 100%);
     }
 }
 
+// ---------------------------------------------------------------------------
+// BOTH THEMES
+// ---------------------------------------------------------------------------
+
 // Pages we added inside the tabs (Analysis Tool, Bulk Trader, Coming soon) must fill the whole tab area.
 // On wide screens the template lays the tab content out as a row, which otherwise shrinks them.
 .main__container {
@@ -168,7 +308,21 @@ $button-gradient: linear-gradient(135deg, $blue-500 0%, $indigo-500 100%);
     max-width: calc(100% - 55rem);
 }
 
-// Chrome, Edge and Safari: a thin navy scrollbar with no arrow buttons
+// Phones: make the header buttons (Deposit, Transfer) smaller so they all fit on the screen
+@media (max-width: 600px) {
+    .app-header--mobile .auth-actions {
+        gap: 0.4rem;
+    }
+
+    .app-header--mobile .auth-actions button {
+        min-width: 0;
+        height: 3.2rem;
+        padding: 0 1rem;
+        font-size: 1.3rem;
+    }
+}
+
+// Chrome, Edge and Safari: a thin scrollbar with no arrow buttons
 @supports selector(::-webkit-scrollbar) {
     .main__container .dc-tabs__list {
         scrollbar-width: auto;
@@ -195,6 +349,14 @@ $button-gradient: linear-gradient(135deg, $blue-500 0%, $indigo-500 100%);
             display: none;
             width: 0;
             height: 0;
+        }
+    }
+
+    body.theme--light .main__container .dc-tabs__list::-webkit-scrollbar-thumb {
+        background: $sky-300;
+
+        &:hover {
+            background: #a9c4ee;
         }
     }
 }
