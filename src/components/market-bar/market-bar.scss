@@ -3,6 +3,23 @@ $cyan: #06b6d4;
 $green: #10b981;
 $red: #ef4444;
 
+// The template lays the main area out as a row. Without these rules the bar was squeezed into a narrow
+// strip down the left edge. Let the area wrap, so the bar gets a full row above the tabs.
+.main:has(> .market-bar) {
+    flex-wrap: wrap;
+
+    > .market-bar {
+        flex: 0 0 100%;
+        width: 100%;
+        min-width: 0;
+    }
+
+    > .main__container {
+        flex: 1 1 100%;
+        min-width: 0;
+    }
+}
+
 .market-bar {
     display: flex;
     flex-wrap: wrap;
